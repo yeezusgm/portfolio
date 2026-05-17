@@ -40,14 +40,10 @@
       cursor: none;
     }
 
-    /* ── JUSTIFY BODY TEXT (exclude headings, labels, nav) ── */
+    /* ── BODY TEXT ── */
     p, .about-text p, .hero-sub, .timeline-desc, .skill-card p,
     .contact-sub, .video-desc, .ba-ph {
-      text-align: justify;
-      text-justify: inter-word;
-      hyphens: none;
-      -webkit-hyphens: none;
-      word-spacing: -0.05em;
+      word-spacing: normal;
     }
 
 
@@ -512,6 +508,83 @@
     #experience {
       border-top: 1px solid rgba(204,26,26,0.1);
       position: relative;
+    }
+    .experience-layout {
+      display: grid;
+      grid-template-columns: minmax(420px, 0.9fr) minmax(320px, 1.1fr);
+      gap: 4rem;
+      align-items: center;
+    }
+    /* LANGUAGES PANEL */
+    .languages-panel {
+      justify-self: center;
+      align-self: center;
+      width: min(100%, 320px);
+      margin-top: 3rem;
+      padding: 2.5rem;
+      border: 1px solid rgba(204,26,26,0.35);
+      border-radius: 2px;
+      background: linear-gradient(135deg, #080010, #0a0018);
+      position: relative;
+      box-shadow: 0 0 30px rgba(180,0,0,0.1), inset 0 0 20px rgba(100,0,0,0.05);
+    }
+    /* Corner decorations */
+    .languages-panel::before {
+      content: '';
+      position: absolute;
+      top: -1px; right: -1px;
+      width: 16px; height: 16px;
+      border-top: 2px solid var(--red-bright);
+      border-right: 2px solid var(--red-bright);
+    }
+    .languages-panel::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: -1px;
+      width: 16px; height: 16px;
+      border-bottom: 2px solid var(--red-bright);
+      border-left: 2px solid var(--red-bright);
+    }
+    @media (max-width: 900px) {
+      .experience-layout {
+        grid-template-columns: 1fr;
+      }
+      .languages-panel {
+        justify-self: center;
+        width: min(100%, 380px);
+        margin-top: 0;
+      }
+    }
+    .lang-title {
+      font-size: .72rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--red-bright);
+      margin-bottom: 1.8rem;
+    }
+    .lang-item { margin-bottom: 1.4rem; }
+    .lang-item:last-child { margin-bottom: 0; }
+    .lang-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: .5rem;
+    }
+    .lang-name { font-size: .88rem; color: var(--text); }
+    .lang-level { font-size: .75rem; color: var(--muted); letter-spacing: .06em; }
+    .lang-bar {
+      height: 3px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .lang-fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--red-bright), #ff4444);
+      border-radius: 2px;
+    }
+    @media (max-width: 768px) {
+      .experience-layout { grid-template-columns: 1fr; }
+      .languages-panel { min-width: unset; }
     }
     .timeline {
       position: relative;
@@ -1112,9 +1185,9 @@
     <svg class="vines" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
       <path d="M100,0 C120,200 80,400 140,600 C180,750 120,850 160,900" stroke="#aa0000" stroke-width="1.5" fill="none"/>
       <path d="M200,0 C180,150 220,300 190,500 C160,680 200,800 180,900" stroke="#880000" stroke-width="1" fill="none"/>
-      <path d="M1300,0 C1280,180 1320,360 1280,560 C1250,720 1290,840 1270,900" stroke="#aa0000" stroke-width="1.5" fill="none"/>
-      <path d="M1380,0 C1400,200 1360,400 1390,600 C1420,780 1380,870 1400,900" stroke="#660000" stroke-width="1" fill="none"/>
-      <path d="M720,0 C700,100 740,250 720,400 C700,550 730,700 710,900" stroke="#770000" stroke-width="0.8" fill="none" opacity="0.5"/>
+
+
+      
       <!-- Tiny branches -->
       <path d="M120,200 C150,180 170,170 180,160" stroke="#880000" stroke-width="0.8" fill="none"/>
       <path d="M130,350 C100,330 85,320 75,310" stroke="#880000" stroke-width="0.8" fill="none"/>
@@ -1170,31 +1243,53 @@
   <section id="experience">
     <div class="section-label reveal">Trayectoria</div>
     <h2 class="section-title reveal reveal-delay-1">Experiencia.</h2>
-    <div class="timeline">
+    <div class="experience-layout">
 
-      <div class="timeline-item reveal">
-        <div class="timeline-dot">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+      <div class="timeline">
+        <div class="timeline-item reveal">
+          <div class="timeline-dot">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+          </div>
+          <div class="timeline-role">
+            Diseñador Multimedia Freelance
+            <span class="timeline-company">— Online</span>
+          </div>
+          <div class="timeline-date">Diciembre 2022 – Presente</div>
+          <p class="timeline-desc">Especializado en transformar ideas en experiencias visuales mediante diseño gráfico, animación y contenido audiovisual para entornos digitales.</p>
         </div>
-        <div class="timeline-role">
-          Diseñador Multimedia Freelance
-          <span class="timeline-company">— Online</span>
+
+        <div class="timeline-item reveal reveal-delay-1">
+          <div class="timeline-dot">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+          </div>
+          <div class="timeline-role">
+            Servicio social en AMAD Puebla
+            <span class="timeline-company">— Puebla, Mx</span>
+          </div>
+          <div class="timeline-date">Febrero 2026 – Presente</div>
+          <p class="timeline-desc">Colaboración en proyectos creativos mediante el desarrollo de diseño gráfico, motion graphics y contenido audiovisual, aportando soluciones visuales efectivas.</p>
         </div>
-        <div class="timeline-date">Diciembre 2022 – Presente</div>
-        <p class="timeline-desc">Especializado en transformar ideas en experiencias visuales mediante diseño gráfico, animación y contenido audiovisual para entornos digitales.</p>
       </div>
 
-      <div class="timeline-item reveal reveal-delay-1">
-        <div class="timeline-dot">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+      <!-- IDIOMAS -->
+      <div class="languages-panel reveal">
+        <div class="lang-title">Idiomas</div>
+        <div class="lang-item">
+          <div class="lang-header">
+            <span class="lang-name">Español</span>
+            <span class="lang-level">Nativo</span>
+          </div>
+          <div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div>
         </div>
-        <div class="timeline-role">
-          Servicio social en AMAD Puebla
-          <span class="timeline-company">— Puebla, Mx</span>
+        <div class="lang-item">
+          <div class="lang-header">
+            <span class="lang-name">Inglés</span>
+            <span class="lang-level">Intermedio</span>
+          </div>
+          <div class="lang-bar"><div class="lang-fill" style="width:55%"></div></div>
         </div>
-        <div class="timeline-date">Febrero 2026 – Presente</div>
-        <p class="timeline-desc">Colaboración en proyectos creativos mediante el desarrollo de diseño gráfico, motion graphics y contenido audiovisual, aportando soluciones visuales efectivas.</p>
       </div>
+
     </div>
   </section>
 
