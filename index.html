@@ -40,6 +40,16 @@
       cursor: none;
     }
 
+    /* ── JUSTIFY BODY TEXT (exclude headings, labels, nav) ── */
+    p, .about-text p, .hero-sub, .timeline-desc, .skill-card p,
+    .contact-sub, .video-desc, .ba-ph {
+      text-align: justify;
+      text-justify: inter-word;
+      hyphens: none;
+      -webkit-hyphens: none;
+      word-spacing: -0.05em;
+    }
+
 
     /* ── FLICKERING BULB ── */
     /* ── PARTICLES CANVAS ── */
@@ -178,7 +188,7 @@
     }
     .nav-links { display: flex; gap: 2.5rem; list-style: none; }
     .nav-links a {
-      font-size: .72rem;
+      font-size: .88rem;
       letter-spacing: .18em;
       text-transform: uppercase;
       color: var(--text);
@@ -196,9 +206,9 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 8rem 4rem 4rem;
+      padding: 8rem 4rem 6rem;
       position: relative;
-      overflow: hidden;
+      overflow: visible;
       background: radial-gradient(ellipse at 70% 40%, rgba(120,0,0,0.12) 0%, transparent 60%),
                   radial-gradient(ellipse at 20% 80%, rgba(80,0,0,0.1) 0%, transparent 50%),
                   var(--bg);
@@ -233,7 +243,7 @@
     }
 
     .hero-tag {
-      font-size: .7rem;
+      font-size: .95rem;
       letter-spacing: .25em;
       text-transform: uppercase;
       color: var(--red-bright);
@@ -292,12 +302,13 @@
     }
 
     .hero-sub {
-      font-size: clamp(.88rem, 1.4vw, 1rem);
+      font-size: clamp(1rem, 1.6vw, 1.2rem);
       color: var(--muted);
-      max-width: 460px;
+      max-width: min(460px, 100%);
       line-height: 1.85;
       margin-bottom: 3rem;
       animation: fadeIn 1s .5s both;
+      text-align: justify;
     }
 
     .hero-cta { display: flex; gap: 1.2rem; flex-wrap: wrap; animation: fadeIn 1s .7s both; }
@@ -337,25 +348,58 @@
       box-shadow: 0 0 18px rgba(255,0,0,0.2);
     }
 
-    .hero-scroll {
-      position: absolute;
-      bottom: 2.5rem; left: 50%;
-      transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: .5rem;
-      opacity: .35;
-      animation: fadeIn 1s 1.2s both;
+    
+
+    /* ── SOFTWARE TOOLS STRIP ── */
+    .tools-strip {
+      margin-top: 3.5rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid rgba(204,26,26,0.15);
     }
-    .scroll-line {
-      width: 1px; height: 60px;
-      background: linear-gradient(to bottom, var(--red-bright), transparent);
-      animation: scrollPulse 2s ease-in-out infinite;
+    .tools-label {
+      font-size: .72rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.8rem;
+      text-align: center;
     }
-    .scroll-label { font-size: .58rem; letter-spacing: .22em; text-transform: uppercase; color: var(--red-bright); }
+    .tools-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.2rem 2rem;
+    }
+    .tool-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .55rem;
+      opacity: .75;
+      transition: opacity .25s, transform .25s;
+    }
+    .tool-item:hover { opacity: 1; transform: translateY(-4px); }
+    .tool-icon {
+      width: 72px; height: 72px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 16px;
+      border: 1px solid rgba(204,26,26,0.2);
+      background: rgba(180,0,0,0.06);
+      box-shadow: 0 0 14px rgba(200,0,0,0.1);
+    }
+    .tool-icon svg { width: 72px; height: 72px; }
+    .tool-name {
+      font-size: .82rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+    }
 
     /* ── SECTION COMMONS ── */
     section { padding: 7rem 4rem; }
     .section-label {
-      font-size: .66rem;
+      font-size: .88rem;
       letter-spacing: .28em;
       text-transform: uppercase;
       color: var(--red-bright);
@@ -443,7 +487,7 @@
       z-index: -1;
       animation: pulseRed 4s ease-in-out infinite 1s;
     }
-    .about-text p { color: var(--muted); margin-bottom: 1.2rem; font-size: .92rem; }
+    .about-text p { color: var(--muted); margin-bottom: 1.2rem; font-size: 1rem; }
     .about-text p strong { color: var(--text); font-weight: 500; }
     .about-stats {
       display: grid;
@@ -461,7 +505,7 @@
       display: block;
       line-height: 1;
     }
-    .stat-label { font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-top: .3rem; }
+    .stat-label { font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-top: .3rem; }
 
 
     /* ── EXPERIENCE ── */
@@ -508,21 +552,21 @@
       display: flex; align-items: center; gap: .6rem; flex-wrap: wrap;
     }
     .timeline-company {
-      font-size: .72rem;
+      font-size: .88rem;
       letter-spacing: .08em;
       text-transform: uppercase;
       color: var(--red-bright);
       font-weight: 400;
     }
     .timeline-date {
-      font-size: .68rem;
+      font-size: .82rem;
       letter-spacing: .1em;
       color: var(--muted);
       margin-bottom: .7rem;
       text-transform: uppercase;
     }
     .timeline-desc {
-      font-size: .85rem;
+      font-size: 1rem;
       color: var(--muted);
       line-height: 1.75;
       max-width: 620px;
@@ -572,10 +616,10 @@
       letter-spacing: .06em;
       color: var(--cream);
     }
-    .skill-card p { font-size: .8rem; color: var(--muted); line-height: 1.7; }
+    .skill-card p { font-size: .95rem; color: var(--muted); line-height: 1.7; }
     .skill-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
     .tag {
-      font-size: .62rem;
+      font-size: .75rem;
       letter-spacing: .08em;
       text-transform: uppercase;
       padding: .28rem .7rem;
@@ -675,7 +719,7 @@
     }
     .cat-count {
       font-family: 'DM Mono', monospace;
-      font-size: .6rem;
+      font-size: .78rem;
       letter-spacing: .15em;
       color: var(--red-bright);
       text-transform: uppercase;
@@ -708,7 +752,7 @@
     }
     .gallery-item:hover .gallery-overlay { opacity: 1; }
     .gallery-overlay span {
-      font-size: .62rem;
+      font-size: .78rem;
       letter-spacing: .18em;
       text-transform: uppercase;
       color: var(--cream);
@@ -872,9 +916,9 @@
       text-shadow: 0 0 25px var(--red-glow), 0 0 70px rgba(255,0,0,0.35);
       animation: textFlicker 5s ease-in-out infinite 3s;
     }
-    .contact-sub { color: var(--muted); font-size: .88rem; max-width: 400px; margin: 0 auto 1.5rem; }
+    .contact-sub { color: var(--muted); font-size: 1rem; max-width: 400px; margin: 0 auto 1.5rem; }
     .contact-email {
-      display: inline-block; font-size: .85rem; letter-spacing: .06em;
+      display: inline-block; font-size: 1rem; letter-spacing: .06em;
       color: var(--text); text-decoration: none;
       border-bottom: 1px solid rgba(204,26,26,0.3);
       padding-bottom: 2px; margin-bottom: 2.5rem;
@@ -902,7 +946,7 @@
       position: absolute; top: 0; left: 0; right: 0; height: 1px;
       background: linear-gradient(90deg, transparent, rgba(204,26,26,0.4), transparent);
     }
-    footer p { font-size: .66rem; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; }
+    footer p { font-size: .8rem; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; }
     footer span { color: var(--red-bright); text-shadow: 0 0 8px rgba(255,0,0,0.3); }
 
     /* ── REVEAL ── */
@@ -1077,21 +1121,14 @@
       <path d="M1290,250 C1260,230 1245,215 1235,205" stroke="#880000" stroke-width="0.8" fill="none"/>
     </svg>
 
-    <div class="hero-tag">Disponible para proyectos · México</div>
+    <div class="hero-tag">Disponible para proyectos · 🇲🇽</div>
     <h1 class="hero-title">
       <span class="line"><span class="word">Diseño que</span></span>
       <span class="line"><span class="word accent">habla,</span></span>
       <span class="line"><span class="word">conecta y</span></span>
       <span class="line"><span class="word">sorprende.</span></span>
     </h1>
-    <p class="hero-sub">
-      Soy Jesús Gervacio, diseñador multimedia con pasión por crear piezas visuales memorables: posters, motion graphics, publicidad y edición de video.
-    </p>
 
-    <div class="hero-scroll">
-      <span class="scroll-label">Scroll</span>
-      <div class="scroll-line"></div>
-    </div>
   </section>
 
   <!-- ABOUT -->
@@ -1213,6 +1250,94 @@
       </div>
 
     </div>
+
+    <!-- SOFTWARE TOOLS -->
+    <div class="tools-strip reveal">
+      <p class="tools-label">Herramientas que utilizo</p>
+      <div class="tools-grid">
+
+        <!-- Photoshop -->
+        <div class="tool-item">
+          <div class="tool-icon">
+            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="50" height="50" rx="10" fill="#001E36"/>
+              <text x="25" y="36" text-anchor="middle" font-family="'DM Mono',monospace" font-size="22" font-weight="700" fill="#31A8FF">Ps</text>
+            </svg>
+          </div>
+          <span class="tool-name">Photoshop</span>
+        </div>
+
+        <!-- Illustrator -->
+        <div class="tool-item">
+          <div class="tool-icon">
+            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="50" height="50" rx="10" fill="#1E0A00"/>
+              <text x="25" y="36" text-anchor="middle" font-family="'DM Mono',monospace" font-size="22" font-weight="700" fill="#FF9A00">Ai</text>
+            </svg>
+          </div>
+          <span class="tool-name">Illustrator</span>
+        </div>
+
+        <!-- After Effects -->
+        <div class="tool-item">
+          <div class="tool-icon">
+            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="50" height="50" rx="10" fill="#0D0121"/>
+              <text x="25" y="36" text-anchor="middle" font-family="'DM Mono',monospace" font-size="22" font-weight="700" fill="#9999FF">Ae</text>
+            </svg>
+          </div>
+          <span class="tool-name">After Effects</span>
+        </div>
+
+        <!-- Lightroom -->
+        <div class="tool-item">
+          <div class="tool-icon">
+            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="50" height="50" rx="10" fill="#001526"/>
+              <text x="25" y="36" text-anchor="middle" font-family="'DM Mono',monospace" font-size="22" font-weight="700" fill="#31A8FF">Lr</text>
+            </svg>
+          </div>
+          <span class="tool-name">Lightroom</span>
+        </div>
+
+        <!-- DaVinci Resolve -->
+        <div class="tool-item">
+          <div class="tool-icon">
+            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="50" height="50" rx="10" fill="#111"/>
+              <circle cx="25" cy="25" r="17" stroke="#E8272A" stroke-width="2.5" fill="none"/>
+              <circle cx="25" cy="25" r="7" fill="#E8272A"/>
+            </svg>
+          </div>
+          <span class="tool-name">DaVinci Resolve</span>
+        </div>
+
+        <!-- CapCut -->
+        <div class="tool-item">
+          <div class="tool-icon">
+            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="50" height="50" rx="10" fill="#111"/>
+              <path d="M18 17 L18 33 L34 25 Z" fill="white"/>
+              <path d="M34 17 L34 33" stroke="white" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="tool-name">CapCut</span>
+        </div>
+
+        <!-- Canva -->
+        <div class="tool-item">
+          <div class="tool-icon">
+            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="50" height="50" rx="10" fill="#7D2AE7"/>
+              <text x="25" y="36" text-anchor="middle" font-family="serif" font-size="30" font-weight="700" fill="white">C</text>
+            </svg>
+          </div>
+          <span class="tool-name">Canva</span>
+        </div>
+
+      </div>
+    </div>
+
   </section>
 
   <!-- GALLERY -->
@@ -1233,35 +1358,43 @@
       <div class="gallery-grid reveal reveal-delay-1">
         <div class="gallery-item">
           <img src="imágenes/SABRINA---copia.jpg" alt="Poster Sabrina" loading="lazy"/>
-          <div class="gallery-overlay"><span>Poster</span></div>
+          <div class="gallery-overlay"></div>
+          
         </div>
         <div class="gallery-item">
           <img src="imágenes/chesco.jpg" alt="Poster Chesco" loading="lazy"/>
-          <div class="gallery-overlay"><span>Poster</span></div>
+          <div class="gallery-overlay"></div>
+          
         </div>
         <div class="gallery-item">
           <img src="imágenes/flor-winner-poster.jpg" alt="Poster Flor" loading="lazy"/>
-          <div class="gallery-overlay"><span>Poster</span></div>
+          <div class="gallery-overlay"></div>
+          
         </div>
         <div class="gallery-item">
-          <img src="imágenes/britney-princess-of-pop.png" alt="Poster " loading="lazy"/>
-          <div class="gallery-overlay"><span>Poster</span></div>
+          <img src="imágenes/britney-princess-of-pop.png" alt="Poster Britney" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
         </div>
         <div class="gallery-item">
           <img src="imágenes/Pogba.png" alt="Poster Pogba" loading="lazy"/>
-          <div class="gallery-overlay"><span>Poster</span></div>
+          <div class="gallery-overlay"></div>
+          
         </div>
         <div class="gallery-item">
           <img src="imágenes/Chloe-Kelly-2.png" alt="Poster Chloe Kelly" loading="lazy"/>
-          <div class="gallery-overlay"><span>Poster</span></div>
+          <div class="gallery-overlay"></div>
+          
         </div>
         <div class="gallery-item">
           <img src="imágenes/Alex-Greenwood.png" alt="Poster Alex Greenwood" loading="lazy"/>
-          <div class="gallery-overlay"><span>Poster</span></div>
+          <div class="gallery-overlay"></div>
+          
         </div>
         <div class="gallery-item">
-          <img src="imágenes/laurita-freigang.png" alt="Poster Britney" loading="lazy"/>
-          <div class="gallery-overlay"><span>Poster</span></div>
+          <img src="imágenes/laurita-freigang.png" alt="Poster Laurita Freigang" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
         </div>
       </div>
     </div>
@@ -1275,15 +1408,18 @@
       <div class="gallery-grid reveal reveal-delay-1">
         <div class="gallery-item">
           <img src="gifs/solo video.gif" alt="Motion animación" loading="lazy"/>
-          <div class="gallery-overlay"><span>Motion</span></div>
+          <div class="gallery-overlay"></div>
+          
         </div>
         <div class="gallery-item">
           <img src="gifs/3ER-congreso-1.gif" alt="Motion congreso" loading="lazy"/>
-          <div class="gallery-overlay"><span>Motion</span></div>
+          <div class="gallery-overlay"></div>
+          
         </div>
         <div class="gallery-item">
           <img src="gifs/animationtext.gif" alt="Motion texto" loading="lazy"/>
-          <div class="gallery-overlay"><span>Motion</span></div>
+          <div class="gallery-overlay"></div>
+          
         </div>
       </div>
     </div>
@@ -1296,16 +1432,19 @@
       </div>
       <div class="gallery-grid reveal reveal-delay-1">
         <div class="gallery-item">
-          <img src="imágenes/invitacion toci.png" alt="Invitación" loading="lazy"/>
-          <div class="gallery-overlay"><span>Invitación</span></div>
+          <img src="imágenes/invitacion toci.jpg" alt="Invitación" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
         </div>
         <div class="gallery-item">
           <img src="imágenes/bautizo invitación.png" alt="Invitación bautizo" loading="lazy"/>
-          <div class="gallery-overlay"><span>Invitación</span></div>
+          <div class="gallery-overlay"></div>
+          
         </div>
         <div class="gallery-item">
           <img src="imágenes/fiesta halloween.jpg" alt="Invitación Halloween" loading="lazy"/>
-          <div class="gallery-overlay"><span>Invitación</span></div>
+          <div class="gallery-overlay"></div>
+          
         </div>
       </div>
     </div>
@@ -1318,12 +1457,14 @@
       </div>
       <div class="gallery-grid reveal reveal-delay-1">
         <div class="gallery-item">
-          <img src="imágenes/6 y 7.png" alt="Publicidad" loading="lazy"/>
-          <div class="gallery-overlay"><span>Publicidad</span></div>
+          <img src="imágenes/6 y 7.jpg" alt="Publicidad" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
         </div>
         <div class="gallery-item">
           <img src="imágenes/western bacon.png" alt="Publicidad Western Bacon" loading="lazy"/>
-          <div class="gallery-overlay"><span>Publicidad</span></div>
+          <div class="gallery-overlay"></div>
+          
         </div>
       </div>
     </div>
@@ -1332,7 +1473,7 @@
     <div class="gallery-cat"><span class="corner corner-tl"></span><span class="corner corner-tr"></span><span class="corner corner-bl"></span><span class="corner corner-br"></span>
       <div class="cat-header reveal">
         <span class="cat-title">Edición de Foto</span>
-        <span class="cat-count">Retoque · Desliza para comparar</span>
+        <span class="cat-count">Retoque fotográfico · Desliza para comparar</span>
       </div>
       <div class="ba-grid reveal reveal-delay-1">
         <div class="ba-card">
@@ -1397,7 +1538,7 @@
       </div>
       <div class="video-grid reveal reveal-delay-1">
         <div class="video-card">
-          <video src="" poster="imágenes/aftermovie thumbnail.png" controls preload="metadata"></video>
+          <div style="position:relative; width:100%; height:0px; padding-bottom:56.250%"><iframe allow="fullscreen" allowfullscreen height="100%" src="https://streamable.com/e/1ed3yf?" width="100%" style="border:none; width:100%; height:100%; position:absolute; left:0px; top:0px; overflow:hidden;"></iframe></div>
           <div class="video-info">
             <p class="video-title">Aftermovie | Hellbound Festival</p>
           </div>
@@ -1448,7 +1589,7 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
         Instagram
       </a>
-      <a href="https://x.com" class="social-link">
+      <a href="https://x.com/_ByteZ" class="social-link">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.988l4.26 5.632 4.747-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         X (antes Twitter)
       </a>
@@ -1565,6 +1706,8 @@
       let cur = '';
       secs.forEach(s => { if (window.scrollY >= s.offsetTop - 200) cur = s.id; });
       navAs.forEach(a => { a.style.color = a.getAttribute('href') === '#' + cur ? 'var(--red-bright)' : ''; });
+
+      // Hide scroll indicator once user starts scrolling
     }, { passive: true });
 
 
