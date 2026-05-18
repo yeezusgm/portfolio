@@ -1689,7 +1689,7 @@
       </div>
       <div class="gallery-grid reveal reveal-delay-1">
         <div class="gallery-item">
-          <img src="imágenes/6 y 7.jpg" alt="Publicidad" loading="lazy"/>
+          <img src="imágenes/ce publicity.jpg" alt="Publicidad" loading="lazy"/>
           <div class="gallery-overlay"></div>
           
         </div>
@@ -1960,62 +1960,74 @@
 
 
     // Feedback → Google Sheets con Apps Script
-    // 1) Pega aquí la URL de tu implementación Web App de Apps Script.
-    // 2) Usa Apps Script con e.parameter para recibir FormData.
+    // Pega aquí la URL /exec de tu implementación Web App de Apps Script.
+    // Este método usa un formulario normal + iframe oculto para evitar problemas de CORS.
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxd3-hRZY2yPDc2wE5Dq9vFfRzjeO-Y-iuF1RdBhFir-ipwgzY3lIWDqdz6Q_grBlnG1Q/exec";
     const feedbackForm = document.getElementById('feedback-form');
     const feedbackStatus = document.getElementById('feedback-status');
 
     if (feedbackForm) {
-      feedbackForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+      feedbackForm.setAttribute('action', GOOGLE_SCRIPT_URL);
+      feedbackForm.setAttribute('method', 'POST');
+      feedbackForm.setAttribute('target', 'feedback-hidden-frame');
+
+      const hiddenFrame = document.createElement('iframe');
+      hiddenFrame.name = 'feedback-hidden-frame';
+      hiddenFrame.id = 'feedback-hidden-frame';
+      hiddenFrame.style.display = 'none';
+      document.body.appendChild(hiddenFrame);
+
+      let submitted = false;
+
+      hiddenFrame.addEventListener('load', () => {
+        if (!submitted) return;
 
         const submitBtn = feedbackForm.querySelector('button[type="submit"]');
-        const nombre = document.getElementById('feedback-name').value.trim();
-        const tipo = document.getElementById('feedback-type').value;
-        const mensaje = document.getElementById('feedback-message').value.trim();
+        feedbackForm.reset();
+        feedbackStatus.className = 'feedback-status ok';
+        feedbackStatus.textContent = 'Gracias por tu feedback.';
+        submitBtn.disabled = false;
+        submitted = false;
+      });
+
+      feedbackForm.addEventListener('submit', (e) => {
+        const submitBtn = feedbackForm.querySelector('button[type="submit"]');
+        const nombreInput = document.getElementById('feedback-name');
+        const mensajeInput = document.getElementById('feedback-message');
 
         feedbackStatus.className = 'feedback-status';
 
-        if (!mensaje) {
+        if (!mensajeInput.value.trim()) {
+          e.preventDefault();
           feedbackStatus.textContent = 'Escribe un mensaje antes de enviarlo.';
           feedbackStatus.classList.add('error');
           return;
         }
 
-        if (GOOGLE_SCRIPT_URL.includes('PEGA_AQUI')) {
-          feedbackStatus.textContent = 'Falta pegar la URL de Apps Script en GOOGLE_SCRIPT_URL.';
+        if (GOOGLE_SCRIPT_URL.includes('PEGA_AQUI') || !GOOGLE_SCRIPT_URL.startsWith('https://script.google.com/macros/s/')) {
+          e.preventDefault();
+          feedbackStatus.textContent = 'Falta pegar una URL válida de Apps Script.';
           feedbackStatus.classList.add('error');
           return;
         }
 
-        const data = new FormData();
-        data.append('fecha', new Date().toISOString());
-        data.append('nombre', nombre || 'Anónimo');
-        data.append('tipo', tipo);
-        data.append('mensaje', mensaje);
+        if (!nombreInput.value.trim()) {
+          nombreInput.value = 'Anónimo';
+        }
 
+        let fechaInput = feedbackForm.querySelector('input[name="fecha"]');
+        if (!fechaInput) {
+          fechaInput = document.createElement('input');
+          fechaInput.type = 'hidden';
+          fechaInput.name = 'fecha';
+          feedbackForm.appendChild(fechaInput);
+        }
+        fechaInput.value = new Date().toISOString();
+
+        submitted = true;
         submitBtn.disabled = true;
         feedbackStatus.textContent = 'Enviando...';
-
-        try {
-          // mode: 'no-cors' evita que Apps Script bloquee el envío por CORS.
-          // La respuesta será opaca, así que asumimos éxito si no hay error de red.
-          await fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: data
-          });
-
-          feedbackForm.reset();
-          feedbackStatus.textContent = 'Gracias por tu feedback.';
-          feedbackStatus.classList.add('ok');
-        } catch (error) {
-          feedbackStatus.textContent = 'Hubo un error, intenta de nuevo.';
-          feedbackStatus.classList.add('error');
-        } finally {
-          submitBtn.disabled = false;
-        }
+        // No usamos preventDefault: dejamos que el formulario se envíe al iframe oculto.
       });
     }
 
