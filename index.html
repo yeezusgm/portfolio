@@ -1,0 +1,2183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jesús Gervacio — Portafolio</title>
+  <link rel="icon" type="image/png" href="icon/logo_square.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #050505;
+      --bg2: #0a0000;
+      --text: #e8ddd0;
+      --muted: #b8a99a;
+      --red: #cc1a1a;
+      --red-bright: #ff2222;
+      --red-glow: #ff0000;
+      --amber: #d4640a;
+      --cream: #f0e6d0;
+      --dark-red: #3a0000;
+      --card1: #120000;
+      --card2: #0d0505;
+      --card3: #100800;
+      --card4: #080010;
+      --flicker-speed: 0.08s;
+      --gold: #d4af37;
+      --gold-bright: #ffd166;
+      --gold-dark: #7a5c12;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── BODY TEXT ── */
+    p, .about-text p, .hero-sub, .timeline-desc, .skill-card p,
+    .contact-sub, .video-desc, .ba-ph {
+      word-spacing: normal;
+    }
+
+
+    /* ── FLICKERING BULB ── */
+    /* ── PARTICLES CANVAS ── */
+    #particles-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ── GRAIN OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.045'/%3E%3C/svg%3E");
+      opacity: 0.55;
+      mix-blend-mode: overlay;
+    }
+
+    /* ── SCANLINES ── */
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      z-index: 8998;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0,0,0,0.08) 3px,
+        rgba(0,0,0,0.08) 4px
+      );
+    }
+
+    /* ── CURSOR ── */
+    #cursor {
+      position: fixed; top: 0; left: 0;
+      width: 10px; height: 10px;
+      background: var(--red-bright);
+      border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      box-shadow: 0 0 12px var(--red-glow), 0 0 30px rgba(255,0,0,0.4);
+      transition: width .2s, height .2s;
+    }
+    #cursor-ring {
+      position: fixed; top: 0; left: 0;
+      width: 36px; height: 36px;
+      border: 1.5px solid rgba(204,26,26,0.5);
+      border-radius: 50%;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s;
+    }
+    body:has(a:hover) #cursor,
+    body:has(button:hover) #cursor { width: 18px; height: 18px; }
+    body:has(a:hover) #cursor-ring,
+    body:has(button:hover) #cursor-ring { width: 56px; height: 56px; }
+
+    /* ── FLICKER ANIMATION ── */
+    @keyframes flicker {
+      0%, 95%, 100% { opacity: 1; }
+      96% { opacity: 0.4; }
+      97% { opacity: 1; }
+      98% { opacity: 0.2; }
+      99% { opacity: 1; }
+    }
+    @keyframes textFlicker {
+      0%, 92%, 100% { text-shadow: 0 0 10px var(--red-glow), 0 0 30px rgba(255,0,0,0.5); }
+      93% { text-shadow: none; opacity: 0.6; }
+      94% { text-shadow: 0 0 10px var(--red-glow), 0 0 30px rgba(255,0,0,0.5); }
+    }
+    @keyframes pulseRed {
+      0%, 100% { box-shadow: 0 0 10px var(--red-glow), 0 0 40px rgba(255,0,0,0.3); }
+      50% { box-shadow: 0 0 20px var(--red-glow), 0 0 60px rgba(255,0,0,0.5); }
+    }
+    @keyframes float1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(20px,-30px) scale(1.06)} }
+    @keyframes float2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-20px,20px) scale(1.04)} }
+    @keyframes slideUp { from{transform:translateY(110%);opacity:0} to{transform:translateY(0);opacity:1} }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes scrollPulse { 0%,100%{opacity:.3} 50%{opacity:.8} }
+    @keyframes lightBulbFlicker {
+      0%,89%,91%,93%,100% { opacity: 1; filter: brightness(1); }
+      90% { opacity: 0.3; filter: brightness(0.2); }
+      92% { opacity: 0.7; filter: brightness(0.6); }
+    }
+    @keyframes driftVines {
+      0%,100% { transform: scaleY(1) rotate(0deg); }
+      50% { transform: scaleY(1.04) rotate(.4deg); }
+    }
+
+    /* ── STRING LIGHTS DECORATION ── */
+    .string-lights {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .string-lights svg { width: 100%; height: 100%; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.4rem 4rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(5,0,0,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(204,26,26,0.15);
+    }
+    nav::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+      opacity: 0.6;
+      animation: flicker 4s ease-in-out infinite;
+    }
+    .nav-logo {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+    .nav-logo img {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+      opacity: 1;
+      filter: brightness(10) drop-shadow(0 0 8px rgba(255,0,0,0.3));
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: .75rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      transition: color .2s, text-shadow .2s;
+    }
+    .nav-links a:hover {
+      color: var(--red-bright);
+      text-shadow: 0 0 10px var(--red-glow);
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 4rem 6rem;
+      position: relative;
+      overflow: visible;
+      background: radial-gradient(ellipse at 70% 40%, rgba(120,0,0,0.12) 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, rgba(80,0,0,0.1) 0%, transparent 50%),
+                  var(--bg);
+    }
+
+    /* Vines / tentacles background */
+    .vines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.06;
+      animation: driftVines 8s ease-in-out infinite;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .blob-1 { width: 600px; height: 600px; background: #990000; top: -150px; right: -150px; animation: float1 14s ease-in-out infinite; }
+    .blob-2 { width: 400px; height: 400px; background: #440000; bottom: -100px; left: 5%; animation: float2 16s ease-in-out infinite; }
+    .blob-3 { width: 250px; height: 250px; background: #cc2200; top: 40%; left: 35%; animation: float1 11s ease-in-out infinite reverse; opacity: 0.07; }
+
+    /* String lights across hero */
+    .hero-lights {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 80px;
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      font-size: .72rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--red-bright);
+      margin-bottom: 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      text-shadow: 0 0 8px var(--red-glow);
+      animation: textFlicker 7s ease-in-out infinite 2s;
+    }
+    .hero-tag::before {
+      content: '';
+      display: inline-block;
+      width: 2rem; height: 1px;
+      background: var(--red-bright);
+      box-shadow: 0 0 8px var(--red-glow);
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(4rem, 10vw, 9.5rem);
+      line-height: .92;
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-title .line { display: block; overflow: hidden; }
+    .hero-title .word {
+      display: inline-block;
+      animation: slideUp .9s cubic-bezier(.16,1,.3,1) both;
+    }
+    .hero-title .accent {
+      background: linear-gradient(135deg, #e8220a, #c1121f, #85182a, #a4133c, #ff4d6d, #c9184a, #800020);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: slideUp .9s cubic-bezier(.16,1,.3,1) .15s both, gradShiftRed 5s ease-in-out infinite;
+      display: inline-block;
+    }
+    @keyframes gradShiftRed {
+      0%,100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    @keyframes redPulse {
+      0%   { opacity: 0.13; transform: scale(1);    filter: blur(90px); }
+      40%  { opacity: 0.28; transform: scale(1.18); filter: blur(110px); }
+      70%  { opacity: 0.18; transform: scale(1.08); filter: blur(95px); }
+      100% { opacity: 0.13; transform: scale(1);    filter: blur(90px); }
+    }
+    @keyframes redPulse2 {
+      0%   { opacity: 0.08; transform: scale(1.1);  filter: blur(120px); }
+      50%  { opacity: 0.2;  transform: scale(0.92); filter: blur(100px); }
+      100% { opacity: 0.08; transform: scale(1.1);  filter: blur(120px); }
+    }
+
+    .hero-sub {
+      font-size: clamp(.9rem, 1.5vw, 1.05rem);
+      color: var(--muted);
+      max-width: min(460px, 100%);
+      line-height: 1.85;
+      margin-bottom: 3rem;
+      animation: fadeIn 1s .5s both;
+      text-align: justify;
+    }
+
+    .hero-cta { display: flex; gap: 1.2rem; flex-wrap: wrap; animation: fadeIn 1s .7s both; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      padding: .9rem 2.2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: .75rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: transform .2s, box-shadow .2s;
+      cursor: none;
+    }
+    .btn-primary {
+      background: var(--red);
+      color: var(--cream);
+      border: 2px solid var(--red-bright);
+      box-shadow: 0 0 20px rgba(255,0,0,0.2);
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 30px rgba(255,0,0,0.5), 0 8px 30px rgba(200,0,0,0.4);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1.5px solid rgba(204,26,26,0.35);
+    }
+    .btn-outline:hover {
+      transform: translateY(-3px);
+      border-color: var(--red-bright);
+      box-shadow: 0 0 18px rgba(255,0,0,0.2);
+    }
+
+    
+
+    /* ── SOFTWARE TOOLS STRIP ── */
+    .tools-strip {
+      margin-top: 3.5rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid rgba(204,26,26,0.15);
+    }
+    .tools-label {
+      font-size: .72rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.8rem;
+      text-align: center;
+    }
+    .tools-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.2rem 2rem;
+    }
+    .tool-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .55rem;
+      opacity: .75;
+      transition: opacity .25s, transform .25s;
+    }
+    .tool-item:hover { opacity: 1; transform: translateY(-4px); }
+    .tool-icon {
+      width: 72px; height: 72px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 16px;
+      border: 1px solid rgba(204,26,26,0.2);
+      background: rgba(180,0,0,0.06);
+      box-shadow: 0 0 14px rgba(200,0,0,0.1);
+    }
+    .tool-icon svg { width: 72px; height: 72px; }
+    .tool-name {
+      font-size: .82rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── SECTION COMMONS ── */
+    section { padding: 7rem 4rem; }
+    .section-label {
+      font-size: .68rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--red-bright);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      text-shadow: 0 0 8px rgba(255,0,0,0.5);
+    }
+    .section-label::after {
+      content: '';
+      display: inline-block;
+      height: 1px; width: 2.5rem;
+      background: var(--red-bright);
+      box-shadow: 0 0 6px var(--red-glow);
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.5rem;
+      color: var(--cream);
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      border-top: 1px solid rgba(204,26,26,0.1);
+      background: radial-gradient(ellipse at 0% 50%, rgba(100,0,0,0.08) 0%, transparent 60%);
+    }
+    .about-img-wrap { position: relative; }
+    .about-img-box {
+      width: 100%;
+      aspect-ratio: 4/5;
+      background: linear-gradient(135deg, var(--dark-red), #1a0505);
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(204,26,26,0.25);
+    }
+    .about-img-box img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: sepia(0.3) brightness(0.85) contrast(1.1);
+    }
+    .about-img-box::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(180,0,0,0.25), rgba(0,0,0,0.3));
+      z-index: 1;
+    }
+    .about-img-box::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: none;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .about-deco-tag {
+      position: absolute;
+      bottom: -1.2rem; right: -1.2rem;
+      background: #cc1a1a;
+      color: #f0e6d0;
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      letter-spacing: .12em;
+      padding: .6rem 1.2rem;
+      text-transform: uppercase;
+      border-radius: 2px;
+      border: 2px solid #ff2222;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      z-index: 10;
+      isolation: isolate;
+    }
+    .about-deco-border {
+      position: absolute;
+      top: 1rem; left: 1rem; right: -1rem; bottom: -1rem;
+      border: 1.5px solid rgba(204,26,26,0.3);
+      border-radius: 2px;
+      z-index: -1;
+      animation: pulseRed 4s ease-in-out infinite 1s;
+    }
+    .about-text p { color: var(--muted); margin-bottom: 1.2rem; font-size: .95rem; }
+    .about-text p strong { color: var(--text); font-weight: 500; }
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(217, 0, 0, 0.12);
+    }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2.2rem;
+      color: var(--cream);
+      display: block;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .stat-label { font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-top: .3rem; }
+
+
+    /* ── EXPERIENCE ── */
+    #experience {
+      border-top: 1px solid rgba(204,26,26,0.1);
+      position: relative;
+    }
+    .experience-layout {
+      display: grid;
+      grid-template-columns: minmax(420px, 0.9fr) minmax(320px, 1.1fr);
+      gap: 4rem;
+      align-items: center;
+    }
+    /* LANGUAGES PANEL */
+    .languages-panel {
+      justify-self: center;
+      align-self: center;
+      width: min(100%, 320px);
+      margin-top: 3rem;
+      padding: 2.5rem;
+      border: 1px solid rgba(204,26,26,0.35);
+      border-radius: 2px;
+      background: linear-gradient(135deg, #080010, #0a0018);
+      position: relative;
+      box-shadow: 0 0 30px rgba(180,0,0,0.1), inset 0 0 20px rgba(100,0,0,0.05);
+    }
+    /* Corner decorations */
+    .languages-panel::before {
+      content: '';
+      position: absolute;
+      top: -1px; right: -1px;
+      width: 16px; height: 16px;
+      border-top: 2px solid var(--red-bright);
+      border-right: 2px solid var(--red-bright);
+    }
+    .languages-panel::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: -1px;
+      width: 16px; height: 16px;
+      border-bottom: 2px solid var(--red-bright);
+      border-left: 2px solid var(--red-bright);
+    }
+    @media (max-width: 900px) {
+      .experience-layout {
+        grid-template-columns: 1fr;
+      }
+      .languages-panel {
+        justify-self: center;
+        width: min(100%, 380px);
+        margin-top: 0;
+      }
+    }
+    .lang-title {
+      font-size: .72rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--red-bright);
+      margin-bottom: 1.8rem;
+    }
+    .lang-item { margin-bottom: 1.4rem; }
+    .lang-item:last-child { margin-bottom: 0; }
+    .lang-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: .5rem;
+    }
+    .lang-name { font-size: .88rem; color: var(--text); }
+    .lang-level { font-size: .75rem; color: var(--muted); letter-spacing: .06em; }
+    .lang-bar {
+      height: 3px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .lang-fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--red-bright), #ff4444);
+      border-radius: 2px;
+    }
+    @media (max-width: 768px) {
+      .experience-layout { grid-template-columns: 1fr; }
+      .languages-panel { min-width: unset; }
+    }
+    .timeline {
+      position: relative;
+      margin-top: 3rem;
+      padding-left: 2rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--red-bright), rgba(204,26,26,0.1));
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2.8rem;
+      padding-left: 2rem;
+    }
+    .timeline-item:last-child { margin-bottom: 0; }
+    .timeline-dot {
+      position: absolute;
+      left: -2.42rem;
+      top: .35rem;
+      width: 14px; height: 14px;
+      border-radius: 2px;
+      background: var(--dark-red);
+      border: 1.5px solid var(--red-bright);
+      box-shadow: 0 0 10px rgba(255,0,0,0.35);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .timeline-dot svg { width: 7px; height: 7px; stroke: var(--red-bright); }
+    .timeline-role {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--cream);
+      margin-bottom: .15rem;
+      display: flex; align-items: center; gap: .6rem; flex-wrap: wrap;
+      letter-spacing: -0.02em;
+    }
+    .timeline-company {
+      font-size: .88rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--red-bright);
+      font-weight: 400;
+    }
+    .timeline-date {
+      font-size: .82rem;
+      letter-spacing: .1em;
+      color: var(--muted);
+      margin-bottom: .7rem;
+      text-transform: uppercase;
+    }
+    .timeline-desc {
+      font-size: .95rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 620px;
+    }
+
+    /* ── SKILLS ── */
+    #skills {
+      border-top: 1px solid rgba(204,26,26,0.1);
+      position: relative;
+    }
+    #skills::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 100% 0%, rgba(100,0,0,0.06) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .skill-card {
+      background: rgba(180,0,0,0.06);
+      border: 1px solid rgba(204,26,26,0.65);
+      border-radius: 2px;
+      padding: 1.8rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 22px rgba(200,0,0,0.22), 0 0 6px rgba(255,30,30,0.12), inset 0 0 40px rgba(140,0,0,0.07);
+    }
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--red-bright), transparent);
+      opacity: 0.9;
+    }
+    .skill-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+    .skill-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      margin-bottom: .8rem;
+      letter-spacing: -0.02em;
+      color: var(--cream);
+    }
+    .skill-card p { font-size: .82rem; color: var(--muted); line-height: 1.7; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+    .tag {
+      font-size: .65rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .28rem .7rem;
+      border-radius: 2px;
+      border: 1px solid;
+    }
+    .tag-red, .tag-amber, .tag-cream, .tag-dark {
+      border-color: rgba(240,230,208,0.5);
+      color: var(--cream);
+    }
+
+    /* ── GALLERY ── */
+    #gallery { border-top: 1px solid rgba(204,26,26,0.1); }
+
+    /* Gallery wrapper — just a spacer */
+    .gallery-frame {
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    /* Each category — framed card with dark purple bg and red border */
+    .gallery-cat {
+      margin-top: 0;
+      padding: 2.5rem 3rem;
+      position: relative;
+      background: linear-gradient(160deg, rgba(40,0,60,0.72) 0%, rgba(20,0,40,0.82) 50%, rgba(35,0,55,0.68) 100%);
+      border: 1px solid rgba(204,26,26,0.45);
+      border-radius: 4px;
+      box-shadow: 0 0 24px rgba(180,0,0,0.12), inset 0 0 40px rgba(60,0,80,0.15);
+    }
+
+    /* Red glow top line */
+    .gallery-cat::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,34,34,0.7), transparent);
+      z-index: 1;
+    }
+
+    /* Inner purple vignette */
+    .gallery-cat::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(120,0,180,0.1) 0%, transparent 65%),
+        radial-gradient(ellipse at 50% 100%, rgba(80,0,120,0.08) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+      border-radius: 4px;
+    }
+
+    /* Make sure content sits above pseudo-elements */
+    .gallery-cat > * { position: relative; z-index: 1; }
+
+    @keyframes borderShift {
+      0%, 100% { background-position: 0% 50%; opacity: 1; }
+      50%       { background-position: 100% 50%; opacity: 0.75; }
+    }
+
+    /* Corner accent marks — normal square corners */
+    .gallery-cat .corner {
+      position: absolute;
+      width: 14px; height: 14px;
+      border-color: var(--red-bright);
+      border-style: solid;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.75;
+    }
+    .gallery-cat .corner-tl { top: 6px;  left: 6px;  border-width: 2px 0 0 2px; }
+    .gallery-cat .corner-tr { top: 6px;  right: 6px; border-width: 2px 2px 0 0; }
+    .gallery-cat .corner-bl { bottom: 6px; left: 6px;  border-width: 0 0 2px 2px; }
+    .gallery-cat .corner-br { bottom: 6px; right: 6px; border-width: 0 2px 2px 0; }
+    .cat-header {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 1.2rem;
+      margin-bottom: 1.8rem;
+      padding: .6rem 1.4rem .6rem 1.2rem;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 3px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.07);
+    }
+    .cat-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--cream);
+    }
+    .cat-count {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem;
+      letter-spacing: .15em;
+      color: var(--red-bright);
+      text-transform: uppercase;
+      opacity: .85;
+    }
+
+    /* Grid de 2 columnas para banners de redes sociales (formato horizontal 1500×500) */
+    .gallery-grid-banners {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      align-items: start;
+    }
+    .gallery-grid-banners .gallery-item {
+      margin-bottom: 0;
+    }
+    .gallery-grid-banners .gallery-item img {
+      aspect-ratio: 3 / 1;
+      object-fit: cover;
+      width: 100%;
+      display: block;
+    }
+
+    /* Masonry grid per category */
+    .gallery-grid { columns: 3 260px; column-gap: 1rem; }
+
+    /* Solo Posters: respeta el orden del HTML en 3 columnas
+       Usa la misma separación que Publicidad: 1rem */
+    .gallery-grid-ordered {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      align-items: start;
+    }
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 1rem;
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+      cursor: none;
+      border: 1px solid rgba(204,26,26,0.08);
+    }
+    .gallery-grid-ordered .gallery-item {
+      margin-bottom: 0;
+    }
+    .gallery-item img {
+      width: 100%; display: block;
+      transition: transform .5s cubic-bezier(.16,1,.3,1), filter .4s;
+    }
+    .gallery-item:hover img { transform: scale(1.04); filter: brightness(1.05) saturate(1.05); }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity .3s;
+      display: flex; align-items: flex-end;
+      padding: 1.2rem;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-overlay span {
+      font-size: .65rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--cream);
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .gallery-overlay span::before {
+      content: '';
+      display: inline-block;
+      width: 1rem; height: 1px;
+      background: var(--red-bright);
+      box-shadow: 0 0 6px var(--red-glow);
+    }
+
+    /* ── BEFORE / AFTER ── */
+    .ba-section { display: none; margin-top: 0; }
+    .video-panel { display: none; margin-top: 0; }
+    .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 1.5rem; }
+    .video-card {
+      border-radius: 2px;
+      overflow: hidden;
+      border: 1px solid rgba(204,26,26,0.15);
+      background: rgba(20,0,0,0.5);
+      transition: transform .3s, border-color .3s;
+    }
+    .video-card:hover { transform: translateY(-6px); border-color: rgba(204,26,26,0.5); box-shadow: 0 0 30px rgba(180,0,0,0.2); }
+    .video-card video { width: 100%; display: block; aspect-ratio: 16/9; background: #000; }
+    .video-card iframe { width: 100%; display: block; aspect-ratio: 16/9; background: #000; border: none; }
+    .video-info { padding: 1rem 1.2rem; border-top: 1px solid rgba(204,26,26,0.1); }
+    .video-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: .9rem; margin-bottom: .3rem; letter-spacing: -0.02em; }
+    .video-desc { font-size: .72rem; color: var(--muted); line-height: 1.6; }
+    .ba-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); gap: 2rem; margin-top: .5rem; }
+    .ba-card {
+      border-radius: 2px;
+      overflow: hidden;
+      border: 1px solid rgba(204,26,26,0.15);
+      background: rgba(15,0,0,0.5);
+    }
+    .ba-label-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: .85rem 1.2rem;
+      border-bottom: 1px solid rgba(204,26,26,0.1);
+    }
+    .ba-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: .9rem; letter-spacing: -0.02em; }
+    .ba-badge {
+      font-size: .56rem; letter-spacing: .1em; text-transform: uppercase;
+      padding: .25rem .75rem; border-radius: 2px;
+      background: rgba(204,26,26,0.12); color: var(--red-bright);
+      border: 1px solid rgba(204,26,26,0.3);
+    }
+    .ba-wrap { position: relative; width: 100%; overflow: hidden; user-select: none; -webkit-user-select: none; }
+    .ba-after-layer { position: relative; width: 100%; z-index: 0; }
+    .ba-after-layer img { width: 100%; height: auto; display: block; position: static; }
+    .ba-before-layer { position: absolute; inset: 0; z-index: 1; clip-path: inset(0 50% 0 0); }
+    .ba-before-layer img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+    .ba-after-layer img[src=""], .ba-before-layer img[src=""] { display: none; }
+    .ba-ph {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: .6rem; color: rgba(255,255,255,.18); font-size: .65rem;
+      letter-spacing: .14em; text-transform: uppercase;
+      background: rgba(20,0,0,0.4);
+    }
+    .ba-ph svg { opacity: .25; }
+    .ba-divider {
+      position: absolute; top: 0; bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      background: linear-gradient(to bottom, var(--red-bright), rgba(255,255,255,.9), var(--red));
+      z-index: 10; pointer-events: none;
+      box-shadow: 0 0 8px var(--red-glow);
+    }
+    .ba-handle {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 42px; height: 42px;
+      background: var(--red);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 20px rgba(255,0,0,0.5);
+      pointer-events: none;
+    }
+    .ba-handle svg { width: 16px; height: 16px; stroke: white; }
+    .ba-tag {
+      position: absolute; top: .85rem; z-index: 12;
+      font-family: 'Syne', sans-serif; font-weight: 600;
+      font-size: .68rem; letter-spacing: .08em; text-transform: uppercase;
+      padding: .28rem .85rem; border-radius: 2px; pointer-events: none;
+      transition: opacity .25s ease;
+    }
+    .ba-tag.before { left: .85rem; background: rgba(5,0,0,.8); color: var(--text); backdrop-filter: blur(6px); }
+    .ba-tag.after  { right: .85rem; background: var(--red); color: #fff; box-shadow: 0 0 10px rgba(255,0,0,0.4); }
+    .ba-drag { position: absolute; inset: 0; z-index: 9; cursor: ew-resize; }
+
+    /* ── LIGHTBOX ── */
+    #lightbox {
+      position: fixed; inset: 0;
+      background: rgba(5,0,0,.97);
+      z-index: 1000;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s;
+    }
+    #lightbox.open { opacity: 1; pointer-events: all; }
+    #lightbox img {
+      max-width: 88vw; max-height: 88vh;
+      object-fit: contain; border-radius: 2px;
+      transform: scale(.93);
+      transition: transform .35s cubic-bezier(.16,1,.3,1);
+      filter: brightness(.95) contrast(1.05);
+    }
+    #lightbox.open img { transform: scale(1); }
+    #lb-close {
+      position: absolute; top: 1.5rem; right: 2rem;
+      background: none; border: none;
+      color: var(--muted); font-size: 1.8rem;
+      cursor: none; transition: color .2s;
+    }
+    #lb-close:hover { color: var(--red-bright); text-shadow: 0 0 10px var(--red-glow); }
+    #lb-prev, #lb-next {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(204,26,26,0.08);
+      border: 1px solid rgba(204,26,26,0.25);
+      color: var(--text);
+      font-size: 1.2rem;
+      padding: .8rem 1rem;
+      cursor: none; transition: background .2s, border-color .2s;
+      border-radius: 2px;
+    }
+    #lb-prev { left: 2rem; } #lb-next { right: 2rem; }
+    #lb-prev:hover, #lb-next:hover {
+      background: rgba(204,26,26,0.2);
+      border-color: var(--red-bright);
+    }
+
+
+
+
+    /* ── FEEDBACK ── */
+    #feedback {
+      border-top: 1px solid rgba(204,26,26,0.1);
+      position: relative;
+      background: radial-gradient(ellipse at 50% 0%, rgba(80,0,120,0.12) 0%, transparent 60%);
+    }
+    #feedback .section-label { justify-content: center; }
+    #feedback .section-label::after { display: none; }
+    #feedback .section-label::before {
+      content: ''; display: inline-block;
+      height: 1px; width: 2.5rem;
+      background: var(--red-bright);
+      box-shadow: 0 0 6px var(--red-glow);
+    }
+    .feedback-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .feedback-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.4rem, 5vw, 4.5rem);
+      line-height: .98;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      color: var(--cream);
+    }
+    .feedback-sub {
+      color: var(--muted);
+      font-size: .9rem;
+      max-width: 560px;
+      margin: 0 auto 2.4rem;
+    }
+    .feedback-form {
+      display: grid;
+      gap: 1rem;
+      padding: 2rem;
+      background: linear-gradient(160deg, rgba(40,0,60,0.72), rgba(15,0,25,0.9));
+      border: 1px solid rgba(204,26,26,0.45);
+      border-radius: 4px;
+      box-shadow: 0 0 24px rgba(180,0,0,0.12), inset 0 0 40px rgba(60,0,80,0.15);
+      text-align: left;
+    }
+    .feedback-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .feedback-field label {
+      display: block;
+      font-size: .65rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--red-bright);
+      margin-bottom: .45rem;
+    }
+    .feedback-field input,
+    .feedback-field select,
+    .feedback-field textarea {
+      width: 100%;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(204,26,26,0.35);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: .82rem;
+      padding: .9rem 1rem;
+      border-radius: 2px;
+      outline: none;
+      cursor: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .feedback-field textarea {
+      min-height: 160px;
+      resize: vertical;
+    }
+    .feedback-field input:focus,
+    .feedback-field select:focus,
+    .feedback-field textarea:focus {
+      border-color: var(--red-bright);
+      box-shadow: 0 0 14px rgba(255,0,0,0.18);
+    }
+    .feedback-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: .5rem;
+    }
+    .feedback-status {
+      font-size: .72rem;
+      letter-spacing: .08em;
+      color: var(--muted);
+      min-height: 1.2rem;
+    }
+    .feedback-status.ok { color: var(--cream); }
+    .feedback-status.error { color: var(--red-bright); }
+    .feedback-form button:disabled {
+      opacity: .55;
+      transform: none;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      border-top: 1px solid rgba(204,26,26,0.1);
+      text-align: center;
+      position: relative;
+      background: radial-gradient(ellipse at 50% 0%, rgba(120,0,0,0.1) 0%, transparent 60%);
+    }
+    #contact .section-label { justify-content: center; }
+    #contact .section-label::after  { display: none; }
+    #contact .section-label::before {
+      content: ''; display: inline-block;
+      height: 1px; width: 2.5rem;
+      background: var(--red-bright);
+      box-shadow: 0 0 6px var(--red-glow);
+    }
+    .contact-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(3rem, 7vw, 6rem);
+      line-height: .95;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      color: var(--cream);
+    }
+    .contact-title .accent {
+      color: var(--red-bright);
+      text-shadow: 0 0 25px var(--red-glow), 0 0 70px rgba(255,0,0,0.35);
+      animation: textFlicker 5s ease-in-out infinite 3s;
+    }
+    .contact-sub { color: var(--muted); font-size: .9rem; max-width: 400px; margin: 0 auto 1.5rem; }
+    .contact-email {
+      display: inline-block; font-size: .85rem; letter-spacing: .05em;
+      color: var(--text); text-decoration: none;
+      border-bottom: 1px solid rgba(204,26,26,0.3);
+      padding-bottom: 2px; margin-bottom: 2.5rem;
+      transition: border-color .2s, color .2s;
+    }
+    .contact-email:hover { border-color: var(--red-bright); color: var(--cream); }
+    .social-links { display: flex; justify-content: center; gap: 2.5rem; margin-top: 3rem; flex-wrap: wrap; }
+    .social-link {
+      display: flex; align-items: center; gap: .7rem;
+      font-size: .68rem; letter-spacing: .15em; text-transform: uppercase;
+      text-decoration: none; color: var(--text);
+      transition: color .2s, text-shadow .2s;
+    }
+    .social-link:hover { color: var(--red-bright); text-shadow: 0 0 8px rgba(255,0,0,0.4); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 4rem;
+      border-top: 1px solid rgba(204,26,26,0.1);
+      display: flex; justify-content: space-between; align-items: center;
+      position: relative;
+    }
+    footer::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(204,26,26,0.4), transparent);
+    }
+    footer p { font-size: .68rem; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; }
+    footer span { color: var(--red-bright); text-shadow: 0 0 8px rgba(255,0,0,0.3); }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity .85s cubic-bezier(.16,1,.3,1), transform .85s cubic-bezier(.16,1,.3,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width:900px) {
+      nav { padding: 1.5rem 2rem; }
+      section { padding: 5rem 2rem; }
+      #hero { padding: 7rem 2rem 4rem; }
+      #about { grid-template-columns: 1fr; gap: 3rem; }
+      .about-img-wrap { max-width: 400px; }
+      .projects-grid { grid-template-columns: 1fr; }
+
+      .gallery-grid { columns: 2 180px; }
+      .gallery-grid-ordered { grid-template-columns: repeat(2, 1fr); }
+      .gallery-grid-banners { grid-template-columns: 1fr; }
+      .gallery-cat { padding: 2rem; }
+      .feedback-row { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+    @media (max-width:600px) {
+      .nav-links { display: none; }
+      .hero-title { font-size: clamp(3rem, 14vw, 6rem); }
+      .gallery-grid { columns: 1; }
+      .gallery-grid-ordered { grid-template-columns: 1fr; }
+      .gallery-grid-banners { grid-template-columns: 1fr; }
+      .gallery-cat { padding: 1.5rem; }
+      #lb-prev { left: .5rem; } #lb-next { right: .5rem; }
+    }
+  </style>
+</head>
+<body>
+
+
+  <!-- Floating particles -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Scanlines effect -->
+
+
+
+  <!-- ══════════════════════════════════════════
+       MÚSICA DE FONDO — CONFIGURA AQUÍ
+       src  → ruta de tu archivo de audio (mp3, ogg, wav)
+       MUSIC_VOLUME → valor entre 0.0 (silencio) y 1.0 (máximo)
+                      Recomendado para fondo: 0.2 – 0.4
+  ══════════════════════════════════════════ -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="musica/I Ran So Far Away.mp3" type="audio/mpeg">
+  </audio>
+
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox">
+    <button id="lb-close">✕</button>
+    <button id="lb-prev">&#8592;</button>
+    <img id="lb-img" src="" alt="Proyecto" />
+    <button id="lb-next">&#8594;</button>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo"><img src="imágenes/logo vectorizado 3.0.png" alt="Logo"/></a>
+    <ul class="nav-links">
+      <li><a href="#about">Sobre mí</a></li>
+      <li><a href="#skills">Habilidades</a></li>
+      <li><a href="#gallery">Galería</a></li>
+      <li><a href="#contact">Contacto</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <!-- String lights SVG -->
+    <svg class="hero-lights" viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Wire -->
+      <path d="M0,20 Q180,8 360,20 Q540,32 720,20 Q900,8 1080,20 Q1260,32 1440,20" stroke="#2a0000" stroke-width="1.5" fill="none"/>
+      <!-- Bulbs with flicker animations -->
+      <g>
+        <circle cx="80"  cy="22" r="5" fill="#ff2222" opacity="0.9"><animate attributeName="opacity" values="0.9;0.2;0.9;0.9;0.9" dur="3.1s" repeatCount="indefinite"/></circle>
+        <line x1="80" y1="17" x2="80" y2="22" stroke="#2a0000" stroke-width="1.2"/>
+      </g>
+      <g>
+        <circle cx="160" cy="16" r="5" fill="#ff6600" opacity="0.85"><animate attributeName="opacity" values="0.85;0.85;0.3;0.85;0.85" dur="4.7s" repeatCount="indefinite"/></circle>
+        <line x1="160" y1="11" x2="160" y2="16" stroke="#2a0000" stroke-width="1.2"/>
+      </g>
+      <g>
+        <circle cx="240" cy="22" r="5" fill="#cc0000" opacity="0.9"><animate attributeName="opacity" values="0.9;0.9;0.9;0.2;0.9" dur="2.3s" repeatCount="indefinite"/></circle>
+        <line x1="240" y1="17" x2="240" y2="22" stroke="#2a0000" stroke-width="1.2"/>
+      </g>
+      <g>
+        <circle cx="320" cy="16" r="5" fill="#ff2222" opacity="0.8"><animate attributeName="opacity" values="0.8;0.2;0.8;0.8;0.2;0.8" dur="5.9s" repeatCount="indefinite"/></circle>
+        <line x1="320" y1="11" x2="320" y2="16" stroke="#2a0000" stroke-width="1.2"/>
+      </g>
+      <g>
+        <circle cx="400" cy="22" r="5" fill="#ff6600" opacity="0.9"><animate attributeName="opacity" values="0.9;0.9;0.4;0.9" dur="3.7s" repeatCount="indefinite"/></circle>
+        <line x1="400" y1="17" x2="400" y2="22" stroke="#2a0000" stroke-width="1.2"/>
+      </g>
+      <g>
+        <circle cx="480" cy="16" r="5" fill="#cc0000" opacity="0.85"><animate attributeName="opacity" values="0.2;0.85;0.85;0.85;0.2" dur="4.1s" repeatCount="indefinite"/></circle>
+        <line x1="480" y1="11" x2="480" y2="16" stroke="#2a0000" stroke-width="1.2"/>
+      </g>
+      <g>
+        <circle cx="560" cy="22" r="5" fill="#ff2222" opacity="0.9"><animate attributeName="opacity" values="0.9;0.9;0.9;0.3;0.9" dur="6.3s" repeatCount="indefinite"/></circle>
+        <line x1="560" y1="17" x2="560" y2="22" stroke="#2a0000" stroke-width="1.2"/>
+      </g>
+      <g>
+        <circle cx="640" cy="16" r="5" fill="#ff6600" opacity="0.8"><animate attributeName="opacity" values="0.8;0.3;0.8;0.8" dur="2.8s" repeatCount="indefinite"/></circle>
+        <line x1="640" y1="11" x2="640" y2="16" stroke="#2a0000" stroke-width="1.2"/>
+      </g>
+      <g>
+        <circle cx="720" cy="22" r="5" fill="#cc0000" opacity="0.9"><animate attributeName="opacity" values="0.9;0.9;0.2;0.9;0.9" dur="5.5s" repeatCount="indefinite"/></circle>
+        <line x1="720" y1="17" x2="720" y2="22" stroke="#2a0000" stroke-width="1.2"/>
+      </g>
+      <g>
+        <circle cx="800" cy="16" r="5" fill="#ff2222" opacity="0.85"><animate attributeName="opacity" values="0.85;0.85;0.85;0.2;0.85" dur="3.4s" repeatCount="indefinite"/></circle>
+        <line x1="800" y1="11" x2="800" y2="16" stroke="#2a0000" stroke-width="1.2"/>
+      </g>
+      <g>
+        <circle cx="880" cy="22" r="5" fill="#ff6600" opacity="0.9"><animate attributeName="opacity" values="0.3;0.9;0.9;0.9" dur="4.9s" repeatCount="indefinite"/></circle>
+        <line x1="880" y1="17" x2="880" y2="22" stroke="#2a0000" stroke-width="1.2"/>
+      </g>
+      <g>
+        <circle cx="960" cy="16" r="5" fill="#cc0000" opacity="0.85"><animate attributeName="opacity" values="0.85;0.4;0.85;0.85" dur="2.6s" repeatCount="indefinite"/></circle>
+        <line x1="960" y1="11" x2="960" y2="16" stroke="#2a0000" stroke-width="1.2"/>
+      </g>
+      <g>
+        <circle cx="1040" cy="22" r="5" fill="#ff2222" opacity="0.9"><animate attributeName="opacity" values="0.9;0.9;0.3;0.9;0.9" dur="7.1s" repeatCount="indefinite"/></circle>
+        <line x1="1040" y1="17" x2="1040" y2="22" stroke="#2a0000" stroke-width="1.2"/>
+      </g>
+      <g>
+        <circle cx="1120" cy="16" r="5" fill="#ff6600" opacity="0.8"><animate attributeName="opacity" values="0.8;0.8;0.2;0.8" dur="3.9s" repeatCount="indefinite"/></circle>
+        <line x1="1120" y1="11" x2="1120" y2="16" stroke="#2a0000" stroke-width="1.2"/>
+      </g>
+      <g>
+        <circle cx="1200" cy="22" r="5" fill="#cc0000" opacity="0.9"><animate attributeName="opacity" values="0.9;0.2;0.9;0.2;0.9" dur="1.9s" repeatCount="indefinite"/></circle>
+        <line x1="1200" y1="17" x2="1200" y2="22" stroke="#2a0000" stroke-width="1.2"/>
+      </g>
+      <g>
+        <circle cx="1280" cy="16" r="5" fill="#ff2222" opacity="0.85"><animate attributeName="opacity" values="0.85;0.85;0.85;0.4" dur="6.7s" repeatCount="indefinite"/></circle>
+        <line x1="1280" y1="11" x2="1280" y2="16" stroke="#2a0000" stroke-width="1.2"/>
+      </g>
+      <g>
+        <circle cx="1360" cy="22" r="5" fill="#ff6600" opacity="0.9"><animate attributeName="opacity" values="0.9;0.3;0.9;0.9" dur="4.3s" repeatCount="indefinite"/></circle>
+        <line x1="1360" y1="17" x2="1360" y2="22" stroke="#2a0000" stroke-width="1.2"/>
+      </g>
+      <!-- Glow filters -->
+      <defs>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+    </svg>
+
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <!-- Vines SVG -->
+    <svg class="vines" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <path d="M100,0 C120,200 80,400 140,600 C180,750 120,850 160,900" stroke="#aa0000" stroke-width="1.5" fill="none"/>
+      <path d="M200,0 C180,150 220,300 190,500 C160,680 200,800 180,900" stroke="#880000" stroke-width="1" fill="none"/>
+
+
+      
+      <!-- Tiny branches -->
+      <path d="M120,200 C150,180 170,170 180,160" stroke="#880000" stroke-width="0.8" fill="none"/>
+      <path d="M130,350 C100,330 85,320 75,310" stroke="#880000" stroke-width="0.8" fill="none"/>
+      <path d="M1290,250 C1260,230 1245,215 1235,205" stroke="#880000" stroke-width="0.8" fill="none"/>
+    </svg>
+
+    <div class="hero-tag">Disponible para proyectos · 🇲🇽</div>
+    <h1 class="hero-title">
+      <span class="line"><span class="word">Diseño que</span></span>
+      <span class="line"><span class="word accent">habla,</span></span>
+      <span class="line"><span class="word">conecta y</span></span>
+      <span class="line"><span class="word">sorprende.</span></span>
+    </h1>
+
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-img-wrap reveal">
+      <div class="about-img-box">
+        <img src="imágenes/profile pic.jpg" alt="Foto de perfil" loading="lazy"/>
+      </div>
+      <div class="about-deco-border"></div>
+      <div class="about-deco-tag">Diseñador Multimedia</div>
+    </div>
+    <div class="about-text">
+      <div class="section-label reveal">Sobre mí</div>
+      <h2 class="section-title reveal reveal-delay-1">Creando con<br/>propósito visual.</h2>
+      <div class="reveal reveal-delay-2">
+        <p>Soy <strong>Jesús Gervacio</strong>, diseñador multimedia apasionado por transformar ideas en experiencias visuales que impactan. Me especializo en diseño gráfico, motion graphics, publicidad y edición de video.</p>
+        <p>Mi trabajo abarca desde posters e identidades visuales hasta animaciones y contenido publicitario para redes sociales. Cada proyecto es una oportunidad de contar una historia única con impacto real.</p>
+        <p>Trabajo con marcas, emprendedores y estudios creativos que quieren destacar. Estoy <strong>disponible ahora mismo</strong> para proyectos freelance.</p>
+      </div>
+      <div class="about-stats reveal reveal-delay-3">
+        <div>
+          <span class="stat-num">+50</span>
+          <span class="stat-label">Proyectos<br/>completados</span>
+        </div>
+        <div>
+          <span class="stat-num">+3</span>
+          <span class="stat-label">Años de<br/>experiencia</span>
+        </div>
+        <div>
+          <span class="stat-num">MX</span>
+          <span class="stat-label">Basado en<br/>México</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-label reveal">Trayectoria</div>
+    <h2 class="section-title reveal reveal-delay-1">Experiencia.</h2>
+    <div class="experience-layout">
+
+      <div class="timeline">
+        <div class="timeline-item reveal">
+          <div class="timeline-dot">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+          </div>
+          <div class="timeline-role">
+            Diseñador Multimedia Freelance
+            <span class="timeline-company">— Online</span>
+          </div>
+          <div class="timeline-date">Diciembre 2022 – Presente</div>
+          <p class="timeline-desc">Especializado en transformar ideas en experiencias visuales mediante diseño gráfico, animación y contenido audiovisual para entornos digitales.</p>
+        </div>
+
+        <div class="timeline-item reveal reveal-delay-1">
+          <div class="timeline-dot">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+          </div>
+          <div class="timeline-role">
+            Servicio social en AMAD Puebla
+            <span class="timeline-company">— Puebla, Mx</span>
+          </div>
+          <div class="timeline-date">Febrero 2026 – Presente</div>
+          <p class="timeline-desc">Colaboración en proyectos creativos mediante el desarrollo de diseño gráfico, motion graphics y contenido audiovisual, aportando soluciones visuales efectivas.</p>
+        </div>
+      </div>
+
+      <!-- IDIOMAS -->
+      <div class="languages-panel reveal">
+        <div class="lang-title">Idiomas</div>
+        <div class="lang-item">
+          <div class="lang-header">
+            <span class="lang-name">Español</span>
+            <span class="lang-level">Nativo</span>
+          </div>
+          <div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div>
+        </div>
+        <div class="lang-item">
+          <div class="lang-header">
+            <span class="lang-name">Inglés</span>
+            <span class="lang-level">Intermedio</span>
+          </div>
+          <div class="lang-bar"><div class="lang-fill" style="width:55%"></div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-label reveal">Especialidades</div>
+    <h2 class="section-title reveal reveal-delay-1">Lo que hago mejor.</h2>
+    <div class="skills-grid">
+
+      <div class="skill-card reveal reveal-delay-1">
+        <div class="skill-icon">🎨</div>
+        <h3>Diseño Gráfico</h3>
+        <p>Posters, publicidad y material editorial creado con Photoshop e Illustrator. Piezas con impacto visual que comunican el mensaje correcto.</p>
+        <div class="skill-tags">
+          <span class="tag tag-red">Posters</span>
+          <span class="tag tag-red">Publicidad</span>
+          <span class="tag tag-red">Logotipos</span>
+          <span class="tag tag-red">Editorial</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal reveal-delay-2">
+        <div class="skill-icon">✦</div>
+        <h3>Motion Graphics</h3>
+        <p>Motion graphics y animaciones para redes sociales, campañas digitales y presentaciones que capturan la atención desde el primer segundo.</p>
+        <div class="skill-tags">
+          <span class="tag tag-amber">After Effects</span>
+          <span class="tag tag-amber">Motion Graphics</span>
+          <span class="tag tag-amber">Social Media</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal reveal-delay-3">
+        <div class="skill-icon">🎬</div>
+        <h3>Edición de Video</h3>
+        <p>Edición de video profesional con DaVinci Resolve y CapCut. Color grading, efectos y narrativa visual para contenido de alto impacto.</p>
+        <div class="skill-tags">
+          <span class="tag tag-cream">DaVinci Resolve</span>
+          <span class="tag tag-cream">CapCut</span>
+          <span class="tag tag-cream">Color Grading</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal reveal-delay-1">
+        <div class="skill-icon">🖼️</div>
+        <h3>Retoque Fotográfico</h3>
+        <p>Edición y retoque fotográfico profesional. Composiciones, manipulación digital y efectos avanzados con Photoshop.</p>
+        <div class="skill-tags">
+          <span class="tag tag-dark">Photoshop</span>
+          <span class="tag tag-dark">Retoque</span>
+          <span class="tag tag-dark">Composición</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SOFTWARE TOOLS -->
+    <div class="tools-strip reveal">
+      <p class="tools-label">Herramientas que utilizo</p>
+      <div class="tools-grid">
+
+        <!-- Photoshop -->
+        <div class="tool-item">
+          <div class="tool-icon">
+            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="50" height="50" rx="10" fill="#001E36"/>
+              <text x="25" y="36" text-anchor="middle" font-family="'DM Mono',monospace" font-size="22" font-weight="700" fill="#31A8FF">Ps</text>
+            </svg>
+          </div>
+          <span class="tool-name">Photoshop</span>
+        </div>
+
+        <!-- Illustrator -->
+        <div class="tool-item">
+          <div class="tool-icon">
+            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="50" height="50" rx="10" fill="#1E0A00"/>
+              <text x="25" y="36" text-anchor="middle" font-family="'DM Mono',monospace" font-size="22" font-weight="700" fill="#FF9A00">Ai</text>
+            </svg>
+          </div>
+          <span class="tool-name">Illustrator</span>
+        </div>
+
+        <!-- After Effects -->
+        <div class="tool-item">
+          <div class="tool-icon">
+            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="50" height="50" rx="10" fill="#0D0121"/>
+              <text x="25" y="36" text-anchor="middle" font-family="'DM Mono',monospace" font-size="22" font-weight="700" fill="#9999FF">Ae</text>
+            </svg>
+          </div>
+          <span class="tool-name">After Effects</span>
+        </div>
+
+        <!-- Lightroom -->
+        <div class="tool-item">
+          <div class="tool-icon">
+            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="50" height="50" rx="10" fill="#001526"/>
+              <text x="25" y="36" text-anchor="middle" font-family="'DM Mono',monospace" font-size="22" font-weight="700" fill="#31A8FF">Lr</text>
+            </svg>
+          </div>
+          <span class="tool-name">Lightroom</span>
+        </div>
+
+        <!-- DaVinci Resolve -->
+        <div class="tool-item">
+          <div class="tool-icon">
+            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="50" height="50" rx="10" fill="#1a1a1a"/>
+              <image href="icon/DaVinci_Resolve_17_logo.svg" x="5" y="5" width="40" height="40"/>
+            </svg>
+          </div>
+          <span class="tool-name">DaVinci Resolve</span>
+        </div>
+
+        <!-- CapCut -->
+        <div class="tool-item">
+          <div class="tool-icon">
+            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="50" height="50" rx="10" fill="#1a1a1a"/>
+              <image href="icon/capcut-svgrepo-com.svg" x="7" y="7" width="36" height="36"/>
+            </svg>
+          </div>
+          <span class="tool-name">CapCut</span>
+        </div>
+
+        <!-- Canva -->
+        <div class="tool-item">
+          <div class="tool-icon">
+            <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="50" height="50" rx="10" fill="#7D2AE7"/>
+              <text x="25" y="36" text-anchor="middle" font-family="serif" font-size="30" font-weight="700" fill="white">C</text>
+            </svg>
+          </div>
+          <span class="tool-name">Canva</span>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="section-label reveal">Galería</div>
+    <h2 class="section-title reveal reveal-delay-1">Mi trabajo en imágenes.</h2>
+    <p class="reveal reveal-delay-2" style="color:var(--muted);font-size:.88rem;max-width:500px;margin-bottom:0;">
+      Haz clic en cualquier imagen para verla en detalle.
+    </p>
+
+    <div class="gallery-frame">
+    <!-- POSTERS -->
+    <div class="gallery-cat"><span class="corner corner-tl"></span><span class="corner corner-tr"></span><span class="corner corner-bl"></span><span class="corner corner-br"></span>
+      <div class="cat-header reveal">
+        <span class="cat-title">Posters</span>
+        <span class="cat-count">Diseño Gráfico</span>
+      </div>
+      <div class="gallery-grid gallery-grid-ordered reveal reveal-delay-1">
+        <div class="gallery-item">
+          <img src="imágenes/21-Savage-poster-brutalismo.png" alt="Poster 21 Savage" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/billie-eilish-poster-brutalismo2.png" alt="Poster Billie" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/The-weeknd-poster-brutalismo.png" alt="Poster The weeknd" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/Slipknot-poster-brutalismo.png" alt="Poster Slipknot" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/Slaughter-to-prevail-poster-brutalismo.png" alt="Poster Slaughter to prevail" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/rammstein-poster-brutalismo.png" alt="Poster Rammstein" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/SABRINA---copia.jpg" alt="Poster Sabrina" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/chesco.jpg" alt="Poster Chesco" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/X poster.jpg" alt="Poster XXXTentacion" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/britney-princess-of-pop.png" alt="Poster Britney" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/flor-winner-poster.jpg" alt="Poster Flor" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/Pogba.png" alt="Poster Pogba" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/Chloe-Kelly-2.png" alt="Poster Chloe Kelly" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/Alex-Greenwood.png" alt="Poster Alex Greenwood" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/laurita-freigang.png" alt="Poster Laurita Freigang" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/silence.png" alt="Poster Silence" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/justice-v2.png" alt="Poster Justice" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <!-- BANNERS DE REDES SOCIALES -->
+    <div class="gallery-cat"><span class="corner corner-tl"></span><span class="corner corner-tr"></span><span class="corner corner-bl"></span><span class="corner corner-br"></span>
+      <div class="cat-header reveal">
+        <span class="cat-title">Banners de Redes Sociales</span>
+        <span class="cat-count">Social Media</span>
+      </div>
+      <div class="gallery-grid-banners reveal reveal-delay-1">
+        <div class="gallery-item">
+          <img src="imágenes/alpine ace 1 - Twitter Banner.jpg" alt="Banner Redes Sociales 1" loading="lazy"/>
+          <div class="gallery-overlay"><span>Banner 1</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/syhte - Twitter Banner.jpg" alt="Banner Redes Sociales 2" loading="lazy"/>
+          <div class="gallery-overlay"><span>Banner 2</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/wildcat 1.5 - Twitter Banner.jpg" alt="Banner Redes Sociales 3" loading="lazy"/>
+          <div class="gallery-overlay"><span>Banner 3</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/yeezus - Twitter Banner.jpg" alt="Banner Redes Sociales 4" loading="lazy"/>
+          <div class="gallery-overlay"><span>Banner 4</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/pliego - Twitter Banner.jpg" alt="Banner Redes Sociales 4" loading="lazy"/>
+          <div class="gallery-overlay"><span>Banner 4</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/Renegade Rider 1 - Twitter Banner.jpg" alt="Banner Redes Sociales 4" loading="lazy"/>
+          <div class="gallery-overlay"><span>Banner 4</span></div>
+        </div>
+      </div>
+    </div>
+
+<!-- INVITACIONES -->
+    <div class="gallery-cat"><span class="corner corner-tl"></span><span class="corner corner-tr"></span><span class="corner corner-bl"></span><span class="corner corner-br"></span>
+      <div class="cat-header reveal">
+        <span class="cat-title">Invitaciones</span>
+        <span class="cat-count">Diseño Gráfico</span>
+      </div>
+      <div class="gallery-grid reveal reveal-delay-1">
+        <div class="gallery-item">
+          <img src="imágenes/invitacion toci.jpg" alt="Invitación" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/butizo_inv.png" alt="Invitación bautizo" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/fiesta halloween.jpg" alt="Invitación Halloween" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <!-- PUBLICIDAD -->
+    <div class="gallery-cat"><span class="corner corner-tl"></span><span class="corner corner-tr"></span><span class="corner corner-bl"></span><span class="corner corner-br"></span>
+      <div class="cat-header reveal">
+        <span class="cat-title">Publicidad</span>
+        <span class="cat-count">Diseño Gráfico</span>
+      </div>
+      <div class="gallery-grid-ordered reveal reveal-delay-1">
+        <div class="gallery-item">
+          <img src="imágenes/ce publicity.jpg" alt="Publicidad Colegio Esperanza" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/western bacon.png" alt="Publicidad Western Bacon" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="imágenes/m&m's valentines.png" alt="Publicidad valentines" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="gifs/3ER-congreso-1.gif" alt="Publicidad congreso am,AMAD" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+        <div class="gallery-item">
+          <img src="gifs/cortina.gif" alt="Publicidad Buldak" loading="lazy"/>
+          <div class="gallery-overlay"></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <!-- EDICIÓN DE FOTO -->
+    <div class="gallery-cat"><span class="corner corner-tl"></span><span class="corner corner-tr"></span><span class="corner corner-bl"></span><span class="corner corner-br"></span>
+      <div class="cat-header reveal">
+        <span class="cat-title">Edición de Foto</span>
+        <span class="cat-count">Retoque fotográfico · Desliza para comparar</span>
+      </div>
+      <div class="ba-grid reveal reveal-delay-1">
+        <div class="ba-card">
+          <div class="ba-label-row">
+            <span class="ba-title">Retoque 1</span>
+            <span class="ba-badge">Edición de foto</span>
+          </div>
+          <div class="ba-wrap" id="ba-1">
+            <div class="ba-after-layer">
+              <img src="imágenes/chica seda editada.jpg" alt="Después"/>
+            </div>
+            <div class="ba-before-layer">
+              <img src="imágenes/chica seda raw.jpg" alt="Antes"/>
+            </div>
+            <div class="ba-divider"><div class="ba-handle"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M9 18l-6-6 6-6M15 6l6 6-6 6"/></svg></div></div>
+            <span class="ba-tag before">Antes</span><span class="ba-tag after">Después</span>
+            <div class="ba-drag"></div>
+          </div>
+        </div>
+        <div class="ba-card">
+          <div class="ba-label-row">
+            <span class="ba-title">Retoque 2</span>
+            <span class="ba-badge">Edición de foto</span>
+          </div>
+          <div class="ba-wrap" id="ba-2">
+            <div class="ba-after-layer">
+              <img src="imágenes/chica 2 edited.jpg" alt="Después"/>
+            </div>
+            <div class="ba-before-layer">
+              <img src="imágenes/chica 2 raw.png" alt="Antes"/>
+            </div>
+            <div class="ba-divider"><div class="ba-handle"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M9 18l-6-6 6-6M15 6l6 6-6 6"/></svg></div></div>
+            <span class="ba-tag before">Antes</span><span class="ba-tag after">Después</span>
+            <div class="ba-drag"></div>
+          </div>
+        </div>
+        <div class="ba-card">
+          <div class="ba-label-row">
+            <span class="ba-title">Retoque 3</span>
+            <span class="ba-badge">Edición de foto</span>
+          </div>
+          <div class="ba-wrap" id="ba-3">
+            <div class="ba-after-layer">
+              <img src="imágenes/sabrina editado.jpg" alt="Después"/>
+            </div>
+            <div class="ba-before-layer">
+              <img src="imágenes/sabrina raw.jpg" alt="Antes"/>
+            </div>
+            <div class="ba-divider"><div class="ba-handle"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M9 18l-6-6 6-6M15 6l6 6-6 6"/></svg></div></div>
+            <span class="ba-tag before">Antes</span><span class="ba-tag after">Después</span>
+            <div class="ba-drag"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDICIÓN DE VIDEO -->
+    <div class="gallery-cat"><span class="corner corner-tl"></span><span class="corner corner-tr"></span><span class="corner corner-bl"></span><span class="corner corner-br"></span>
+      <div class="cat-header reveal">
+        <span class="cat-title">Edición de Video</span>
+        <span class="cat-count">Audiovisual</span>
+      </div>
+      <div class="video-grid reveal reveal-delay-1">
+        <div class="video-card">
+          <iframe src="https://www.youtube.com/embed/fTNwM8HKnBA?si=i9-Wbh086t6Z1kv_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <div class="video-info">
+            <p class="video-title">Aftermovie | Hellbound Festival</p>
+          </div>
+        </div>
+        <div class="video-card">
+          <!-- Pega aquí tu segundo embed -->
+          <iframe src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <div class="video-info">
+            <p class="video-title">Título del video</p>
+            <p class="video-desc">Descripción breve del proyecto.</p>
+          </div>
+        </div>
+        <div class="video-card">
+          <!-- Pega aquí tu tercer embed de YouTube -->
+          <iframe src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <div class="video-info">
+            <p class="video-title">Título del video</p>
+            <p class="video-desc">Descripción breve del proyecto.</p>
+          </div>
+        </div>
+      </div>
+    </div> <!-- /.gallery-frame -->
+
+  </section>
+
+  <!-- ── GIF SECTION ── -->
+  <section id="gif-banner" style="padding: 4rem 4rem; background: var(--bg);">
+    <div style="position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; border-radius: 8px;">
+      <img
+        src="gifs/itachi gif.gif"
+        alt="GIF banner"
+        style="width: 100%; height: 100%; object-fit: cover; display: block;"
+      />
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="section-label reveal">Contacto</div>
+    <h2 class="contact-title reveal reveal-delay-1">¿Tienes un<br/><span class="accent">proyecto</span> en<br/>mente?</h2>
+    <p class="contact-sub reveal reveal-delay-2">Estoy disponible ahora mismo para colaborar. Cuéntame tu idea y hagamos algo increíble juntos.</p>
+    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=jesusgervacio142@gmail.com" target="_blank" rel="noopener noreferrer" class="contact-email reveal reveal-delay-2">jesusgervacio142@gmail.com</a>
+    <br/>
+
+    <div class="social-links reveal">
+      <a href="https://www.behance.net/jesusgervacio" target="_blank" class="social-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="7" width="11" height="10" rx="2"/><path d="M14 9h6M14 12h6M14 15h4"/><circle cx="5" cy="7" r="2"/></svg>
+        Behance
+      </a>
+      <a href="https://www.instagram.com/_bytez/" class="social-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        Instagram
+      </a>
+      <a href="https://x.com/" class="social-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.988l4.26 5.632 4.747-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        X (antes Twitter)
+      </a>
+    </div>
+  </section>
+  
+
+
+  <section id="feedback">
+    <div class="feedback-wrap">
+      <div class="section-label reveal">Feedback</div>
+      <h2 class="feedback-title reveal reveal-delay-1">Déjame tu opinión.</h2>
+      <p class="feedback-sub reveal reveal-delay-2">Tu comentario me ayuda a mejorar mi trabajo, mi portafolio y la forma en que presento mis proyectos.</p>
+
+      <form id="feedback-form" class="feedback-form reveal reveal-delay-3">
+        <div class="feedback-row">
+          <div class="feedback-field">
+            <label for="feedback-name">Nombre <span style="color:var(--muted);">/ opcional</span></label>
+            <input id="feedback-name" name="nombre" type="text" placeholder="Tu nombre" autocomplete="name" />
+          </div>
+          <div class="feedback-field">
+            <label for="feedback-type">Tipo de visitante</label>
+            <select id="feedback-type" name="tipo">
+              <option value="Diseñador/a">Diseñador/a</option>
+              <option value="Compañero/a">Compañero/a</option>
+              <option value="Cliente potencial">Cliente potencial</option>
+              <option value="Público general">Público general</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="feedback-field">
+          <label for="feedback-message">Mensaje</label>
+          <textarea id="feedback-message" name="mensaje" placeholder="Escribe aquí tu feedback sobre mi portafolio..." required></textarea>
+        </div>
+
+        <div class="feedback-actions">
+          <button type="submit" class="btn btn-primary">Enviar feedback</button>
+          <p id="feedback-status" class="feedback-status" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    // Cursor
+    const cursor = document.getElementById('cursor'), ring = document.getElementById('cursor-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    (function tick() {
+      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+      rx += (mx - rx) * .12; ry += (my - ry) * .12;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(tick);
+    })();
+
+    // Scroll reveal
+    const obs = new IntersectionObserver(es => {
+      es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: .08 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    // Before/After sliders
+    document.querySelectorAll('.ba-wrap').forEach(wrap => {
+      const beforeLayer = wrap.querySelector('.ba-before-layer');
+      const divider = wrap.querySelector('.ba-divider');
+      const drag = wrap.querySelector('.ba-drag');
+      const tagBefore = wrap.querySelector('.ba-tag.before');
+      const tagAfter = wrap.querySelector('.ba-tag.after');
+      let dragging = false;
+
+      wrap.querySelectorAll('img').forEach(img => {
+        if (img.src && !img.src.endsWith('/')) {
+          img.closest('.ba-after-layer, .ba-before-layer')?.querySelector('.ba-ph')?.remove();
+        }
+      });
+
+      function setPos(pct) {
+        pct = Math.max(1, Math.min(99, pct));
+        beforeLayer.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+        divider.style.left = pct + '%';
+        tagBefore.style.opacity = pct < 12 ? '0' : '1';
+        tagAfter.style.opacity = pct > 88 ? '0' : '1';
+      }
+      setPos(50);
+
+      function onMove(clientX) {
+        const rect = wrap.getBoundingClientRect();
+        setPos(((clientX - rect.left) / rect.width) * 100);
+      }
+
+      drag.addEventListener('mousedown', e => { dragging = true; e.preventDefault(); });
+      drag.addEventListener('touchstart', () => { dragging = true; }, { passive: true });
+      window.addEventListener('mousemove', e => { if (dragging) onMove(e.clientX); });
+      window.addEventListener('touchmove', e => { if (dragging) onMove(e.touches[0].clientX); }, { passive: true });
+      window.addEventListener('mouseup', () => { dragging = false; });
+      window.addEventListener('touchend', () => { dragging = false; });
+    });
+
+    // Lightbox
+    const items = Array.from(document.querySelectorAll('.gallery-item'));
+    
+    const lb = document.getElementById('lightbox'), lbImg = document.getElementById('lb-img');
+    let idx = 0;
+    const vis = () => items.filter(i => i.style.display !== 'none');
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        idx = vis().indexOf(item);
+        lbImg.src = vis()[idx].querySelector('img').src;
+        lb.classList.add('open');
+      });
+    });
+    document.getElementById('lb-close').addEventListener('click', () => lb.classList.remove('open'));
+    lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('open'); });
+    document.getElementById('lb-prev').addEventListener('click', () => {
+      const v = vis(); idx = (idx - 1 + v.length) % v.length; lbImg.src = v[idx].querySelector('img').src;
+    });
+    document.getElementById('lb-next').addEventListener('click', () => {
+      const v = vis(); idx = (idx + 1) % v.length; lbImg.src = v[idx].querySelector('img').src;
+    });
+    document.addEventListener('keydown', e => {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape') lb.classList.remove('open');
+      if (e.key === 'ArrowLeft') document.getElementById('lb-prev').click();
+      if (e.key === 'ArrowRight') document.getElementById('lb-next').click();
+    });
+
+
+
+
+    // Feedback → Google Sheets con Apps Script
+    // Pega aquí la URL /exec de tu implementación Web App de Apps Script.
+    // Este método usa un formulario normal + iframe oculto para evitar problemas de CORS.
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxd3-hRZY2yPDc2wE5Dq9vFfRzjeO-Y-iuF1RdBhFir-ipwgzY3lIWDqdz6Q_grBlnG1Q/exec";
+    const feedbackForm = document.getElementById('feedback-form');
+    const feedbackStatus = document.getElementById('feedback-status');
+
+    if (feedbackForm) {
+      feedbackForm.setAttribute('action', GOOGLE_SCRIPT_URL);
+      feedbackForm.setAttribute('method', 'POST');
+      feedbackForm.setAttribute('target', 'feedback-hidden-frame');
+
+      const hiddenFrame = document.createElement('iframe');
+      hiddenFrame.name = 'feedback-hidden-frame';
+      hiddenFrame.id = 'feedback-hidden-frame';
+      hiddenFrame.style.display = 'none';
+      document.body.appendChild(hiddenFrame);
+
+      let submitted = false;
+
+      hiddenFrame.addEventListener('load', () => {
+        if (!submitted) return;
+
+        const submitBtn = feedbackForm.querySelector('button[type="submit"]');
+        feedbackForm.reset();
+        feedbackStatus.className = 'feedback-status ok';
+        feedbackStatus.textContent = 'Gracias por tu feedback.';
+        submitBtn.disabled = false;
+        submitted = false;
+      });
+
+      feedbackForm.addEventListener('submit', (e) => {
+        const submitBtn = feedbackForm.querySelector('button[type="submit"]');
+        const nombreInput = document.getElementById('feedback-name');
+        const mensajeInput = document.getElementById('feedback-message');
+
+        feedbackStatus.className = 'feedback-status';
+
+        if (!mensajeInput.value.trim()) {
+          e.preventDefault();
+          feedbackStatus.textContent = 'Escribe un mensaje antes de enviarlo.';
+          feedbackStatus.classList.add('error');
+          return;
+        }
+
+        if (GOOGLE_SCRIPT_URL.includes('PEGA_AQUI') || !GOOGLE_SCRIPT_URL.startsWith('https://script.google.com/macros/s/')) {
+          e.preventDefault();
+          feedbackStatus.textContent = 'Falta pegar una URL válida de Apps Script.';
+          feedbackStatus.classList.add('error');
+          return;
+        }
+
+        if (!nombreInput.value.trim()) {
+          nombreInput.value = 'Anónimo';
+        }
+
+        let fechaInput = feedbackForm.querySelector('input[name="fecha"]');
+        if (!fechaInput) {
+          fechaInput = document.createElement('input');
+          fechaInput.type = 'hidden';
+          fechaInput.name = 'fecha';
+          feedbackForm.appendChild(fechaInput);
+        }
+        fechaInput.value = new Date().toISOString();
+
+        submitted = true;
+        submitBtn.disabled = true;
+        feedbackStatus.textContent = 'Enviando...';
+        // No usamos preventDefault: dejamos que el formulario se envíe al iframe oculto.
+      });
+    }
+
+
+    // ═══════════════════════════════════════
+    // CONFIGURACIÓN DE MÚSICA DE FONDO
+    // Cambia MUSIC_VOLUME: 0 = silencio, 1 = máximo
+    // Recomendado para fondo: entre 0.2 y 0.4
+    const MUSIC_VOLUME = 0.02;
+    // ═══════════════════════════════════════
+    const bgMusic = document.getElementById('bg-music');
+    if (bgMusic) {
+      bgMusic.volume = MUSIC_VOLUME;
+      // Auto-play al primer clic/toque (política de navegadores)
+      const startMusic = () => {
+        bgMusic.play().catch(() => {});
+        document.removeEventListener('click', startMusic);
+        document.removeEventListener('keydown', startMusic);
+      };
+      document.addEventListener('click', startMusic);
+      document.addEventListener('keydown', startMusic);
+    }
+
+
+    // Nav highlight
+    const secs = document.querySelectorAll('section[id]'), navAs = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let cur = '';
+      secs.forEach(s => { if (window.scrollY >= s.offsetTop - 200) cur = s.id; });
+      navAs.forEach(a => { a.style.color = a.getAttribute('href') === '#' + cur ? 'var(--red-bright)' : ''; });
+
+      // Hide scroll indicator once user starts scrolling
+    }, { passive: true });
+
+
+    // ── FLOATING PARTICLES ──
+    (function() {
+      const canvas = document.getElementById('particles-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let W, H, particles = [];
+      const COUNT = 38;
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize, { passive: true });
+      function Particle() {
+        this.reset = function() {
+          this.x = Math.random() * W;
+          this.y = Math.random() * H;
+          this.r = Math.random() * 1.4 + 0.3;
+          this.alpha = Math.random() * 0.55 + 0.1;
+          this.vx = (Math.random() - 0.5) * 0.18;
+          this.vy = -(Math.random() * 0.25 + 0.05);
+          this.life = 0;
+          this.maxLife = Math.random() * 400 + 200;
+        };
+        this.reset();
+        this.life = Math.random() * this.maxLife;
+      }
+      for (let i = 0; i < COUNT; i++) particles.push(new Particle());
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach(p => {
+          p.life++;
+          if (p.life > p.maxLife) p.reset();
+          const t = p.life / p.maxLife;
+          const fade = t < 0.15 ? t / 0.15 : t > 0.8 ? (1 - t) / 0.2 : 1;
+          ctx.beginPath();
+          ctx.arc(p.x + p.vx * p.life, p.y + p.vy * p.life, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255,245,220,${p.alpha * fade})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+  </script>
+</body>
+</html>
