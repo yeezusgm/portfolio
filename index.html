@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Jesús Gervacio — Portafolio</title>
   <link rel="icon" type="image/png" href="icon/logo_square.png" />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
@@ -1168,39 +1168,6 @@
     .reveal-delay-2 { transition-delay: .2s; }
     .reveal-delay-3 { transition-delay: .3s; }
 
-
-
-    /* ── MOBILE / TOUCH FIXES ── */
-    @media (hover: none), (pointer: coarse) {
-      html, body,
-      a, button, input, select, textarea,
-      .btn, .gallery-item, .ba-drag, #lb-close, #lb-prev, #lb-next {
-        cursor: auto !important;
-      }
-
-      #cursor,
-      #cursor-ring {
-        display: none !important;
-      }
-
-      .gallery-item:hover img {
-        transform: none;
-        filter: none;
-      }
-
-      .gallery-item:hover .gallery-overlay {
-        opacity: 0;
-      }
-
-      .ba-wrap {
-        touch-action: pan-y;
-      }
-
-      .ba-drag {
-        touch-action: none;
-      }
-    }
-
     /* ── RESPONSIVE ── */
     @media (max-width:900px) {
       nav { padding: 1.5rem 2rem; }
@@ -1226,6 +1193,169 @@
       .gallery-cat { padding: 1.5rem; }
       #lb-prev { left: .5rem; } #lb-next { right: .5rem; }
     }
+
+
+    /* ── MOBILE FIX: ancho correcto, sin cursor de PC y sin overflow horizontal ── */
+    @media (hover: none), (pointer: coarse), (max-width: 768px) {
+      html,
+      body {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        overflow-x: hidden;
+        cursor: auto !important;
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+        touch-action: manipulation;
+      }
+
+      body {
+        position: relative;
+      }
+
+      #cursor,
+      #cursor-ring {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+      }
+
+      *,
+      *::before,
+      *::after,
+      a,
+      button,
+      input,
+      select,
+      textarea,
+      .btn,
+      .gallery-item,
+      .ba-drag,
+      #lb-close,
+      #lb-prev,
+      #lb-next {
+        cursor: auto !important;
+      }
+
+      nav,
+      section,
+      footer,
+      #hero,
+      #about,
+      #experience,
+      #skills,
+      #gallery,
+      #contact,
+      #feedback {
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: hidden;
+      }
+
+      nav {
+        padding: 1rem 1.25rem;
+      }
+
+      section {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+      }
+
+      #hero {
+        min-height: auto;
+        padding-top: 6.5rem;
+        padding-bottom: 4rem;
+      }
+
+      .hero-title {
+        width: 100%;
+        max-width: 100%;
+        font-size: clamp(2.6rem, 13vw, 4.5rem);
+        overflow-wrap: anywhere;
+      }
+
+      .hero-tag,
+      .section-label,
+      .timeline-role,
+      .feedback-actions,
+      .social-links {
+        flex-wrap: wrap;
+      }
+
+      .about-img-wrap,
+      .about-img-box,
+      .experience-layout,
+      .languages-panel,
+      .skills-grid,
+      .gallery-frame,
+      .gallery-cat,
+      .gallery-grid,
+      .gallery-grid-ordered,
+      .gallery-grid-banners,
+      .gallery-item,
+      .gallery-item img,
+      .video-grid,
+      .video-card,
+      .ba-grid,
+      .ba-card,
+      .ba-wrap,
+      .ba-after-layer,
+      .ba-before-layer,
+      .feedback-wrap,
+      .feedback-form,
+      footer {
+        max-width: 100%;
+      }
+
+      .cat-header {
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: .55rem .9rem;
+      }
+
+      .cat-title {
+        line-height: 1.05;
+        overflow-wrap: anywhere;
+      }
+
+      .gallery-item img,
+      .ba-after-layer img,
+      .ba-before-layer img,
+      .video-card video,
+      .video-card iframe {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .ba-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .ba-wrap {
+        touch-action: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+
+      .ba-drag {
+        touch-action: none;
+      }
+
+      .ba-label-row {
+        gap: .75rem;
+        flex-wrap: wrap;
+      }
+
+      #lightbox img {
+        max-width: 92vw;
+        max-height: 82vh;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1977,8 +2107,16 @@
   </section>
 
   <script>
-    // Cursor personalizado: solo en escritorio con mouse/trackpad.
-    // En móvil se desactiva para no interferir con taps, scroll y sliders.
+
+    // Evita que el sitio se aleje/acercque con pellizco en móvil
+    document.addEventListener('gesturestart', e => e.preventDefault(), { passive: false });
+    document.addEventListener('gesturechange', e => e.preventDefault(), { passive: false });
+    document.addEventListener('gestureend', e => e.preventDefault(), { passive: false });
+    document.addEventListener('touchmove', e => {
+      if (e.touches && e.touches.length > 1) e.preventDefault();
+    }, { passive: false });
+
+    // Cursor personalizado solo en dispositivos con mouse/trackpad
     const cursor = document.getElementById('cursor'), ring = document.getElementById('cursor-ring');
     const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
@@ -1994,6 +2132,7 @@
     } else {
       cursor?.remove();
       ring?.remove();
+      document.body.style.cursor = 'auto';
     }
 
     // Scroll reveal
@@ -2031,33 +2170,41 @@
         setPos(((clientX - rect.left) / rect.width) * 100);
       }
 
-      const startDrag = clientX => { dragging = true; onMove(clientX); };
-      const stopDrag = () => { dragging = false; };
+      function startDrag(clientX, e) {
+        dragging = true;
+        onMove(clientX);
+        e?.preventDefault?.();
+      }
 
-      drag.addEventListener('mousedown', e => {
-        startDrag(e.clientX);
-        e.preventDefault();
-      });
+      function stopDrag() {
+        dragging = false;
+      }
 
-      drag.addEventListener('touchstart', e => {
-        if (!e.touches.length) return;
-        startDrag(e.touches[0].clientX);
-        e.preventDefault();
-      }, { passive: false });
-
-      window.addEventListener('mousemove', e => {
-        if (dragging) onMove(e.clientX);
-      });
-
-      window.addEventListener('touchmove', e => {
-        if (!dragging || !e.touches.length) return;
-        onMove(e.touches[0].clientX);
-        e.preventDefault();
-      }, { passive: false });
-
-      window.addEventListener('mouseup', stopDrag);
-      window.addEventListener('touchend', stopDrag);
-      window.addEventListener('touchcancel', stopDrag);
+      if (window.PointerEvent) {
+        drag.addEventListener('pointerdown', e => {
+          drag.setPointerCapture?.(e.pointerId);
+          startDrag(e.clientX, e);
+        });
+        drag.addEventListener('pointermove', e => {
+          if (!dragging) return;
+          onMove(e.clientX);
+          e.preventDefault();
+        });
+        drag.addEventListener('pointerup', stopDrag);
+        drag.addEventListener('pointercancel', stopDrag);
+      } else {
+        drag.addEventListener('mousedown', e => { startDrag(e.clientX, e); });
+        drag.addEventListener('touchstart', e => { startDrag(e.touches[0].clientX, e); }, { passive: false });
+        window.addEventListener('mousemove', e => { if (dragging) onMove(e.clientX); });
+        window.addEventListener('touchmove', e => {
+          if (!dragging) return;
+          onMove(e.touches[0].clientX);
+          e.preventDefault();
+        }, { passive: false });
+        window.addEventListener('mouseup', stopDrag);
+        window.addEventListener('touchend', stopDrag);
+        window.addEventListener('touchcancel', stopDrag);
+      }
     });
 
     // Lightbox
