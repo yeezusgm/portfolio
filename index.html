@@ -1168,6 +1168,39 @@
     .reveal-delay-2 { transition-delay: .2s; }
     .reveal-delay-3 { transition-delay: .3s; }
 
+
+
+    /* ── MOBILE / TOUCH FIXES ── */
+    @media (hover: none), (pointer: coarse) {
+      html, body,
+      a, button, input, select, textarea,
+      .btn, .gallery-item, .ba-drag, #lb-close, #lb-prev, #lb-next {
+        cursor: auto !important;
+      }
+
+      #cursor,
+      #cursor-ring {
+        display: none !important;
+      }
+
+      .gallery-item:hover img {
+        transform: none;
+        filter: none;
+      }
+
+      .gallery-item:hover .gallery-overlay {
+        opacity: 0;
+      }
+
+      .ba-wrap {
+        touch-action: pan-y;
+      }
+
+      .ba-drag {
+        touch-action: none;
+      }
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width:900px) {
       nav { padding: 1.5rem 2rem; }
@@ -1944,16 +1977,24 @@
   </section>
 
   <script>
-    // Cursor
+    // Cursor personalizado: solo en escritorio con mouse/trackpad.
+    // En móvil se desactiva para no interferir con taps, scroll y sliders.
     const cursor = document.getElementById('cursor'), ring = document.getElementById('cursor-ring');
-    let mx = 0, my = 0, rx = 0, ry = 0;
-    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-    (function tick() {
-      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
-      rx += (mx - rx) * .12; ry += (my - ry) * .12;
-      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-      requestAnimationFrame(tick);
-    })();
+    const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    if (hasFinePointer && cursor && ring) {
+      let mx = 0, my = 0, rx = 0, ry = 0;
+      document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+      (function tick() {
+        cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+        rx += (mx - rx) * .12; ry += (my - ry) * .12;
+        ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+        requestAnimationFrame(tick);
+      })();
+    } else {
+      cursor?.remove();
+      ring?.remove();
+    }
 
     // Scroll reveal
     const obs = new IntersectionObserver(es => {
@@ -1990,12 +2031,33 @@
         setPos(((clientX - rect.left) / rect.width) * 100);
       }
 
-      drag.addEventListener('mousedown', e => { dragging = true; e.preventDefault(); });
-      drag.addEventListener('touchstart', () => { dragging = true; }, { passive: true });
-      window.addEventListener('mousemove', e => { if (dragging) onMove(e.clientX); });
-      window.addEventListener('touchmove', e => { if (dragging) onMove(e.touches[0].clientX); }, { passive: true });
-      window.addEventListener('mouseup', () => { dragging = false; });
-      window.addEventListener('touchend', () => { dragging = false; });
+      const startDrag = clientX => { dragging = true; onMove(clientX); };
+      const stopDrag = () => { dragging = false; };
+
+      drag.addEventListener('mousedown', e => {
+        startDrag(e.clientX);
+        e.preventDefault();
+      });
+
+      drag.addEventListener('touchstart', e => {
+        if (!e.touches.length) return;
+        startDrag(e.touches[0].clientX);
+        e.preventDefault();
+      }, { passive: false });
+
+      window.addEventListener('mousemove', e => {
+        if (dragging) onMove(e.clientX);
+      });
+
+      window.addEventListener('touchmove', e => {
+        if (!dragging || !e.touches.length) return;
+        onMove(e.touches[0].clientX);
+        e.preventDefault();
+      }, { passive: false });
+
+      window.addEventListener('mouseup', stopDrag);
+      window.addEventListener('touchend', stopDrag);
+      window.addEventListener('touchcancel', stopDrag);
     });
 
     // Lightbox
