@@ -85,30 +85,23 @@
       );
     }
 
-    /* ── CURSOR ── */
-    #cursor {
-      position: fixed; top: 0; left: 0;
-      width: 10px; height: 10px;
-      background: var(--red-bright);
-      border-radius: 50%;
-      pointer-events: none; z-index: 9999;
-      transform: translate(-50%,-50%);
-      box-shadow: 0 0 12px var(--red-glow), 0 0 30px rgba(255,0,0,0.4);
-      transition: width .2s, height .2s;
+    /* ── CURSOR (Silksong) ── */
+    /* Pon los archivos .cur en una carpeta  cursors/  junto a index.html */
+    #cursor, #cursor-ring { display: none !important; }
+
+    body, body * {
+      cursor: url('cursors/SilksongNormalCursor.cur') 0 0, auto !important;
     }
-    #cursor-ring {
-      position: fixed; top: 0; left: 0;
-      width: 36px; height: 36px;
-      border: 1.5px solid rgba(204,26,26,0.5);
-      border-radius: 50%;
-      pointer-events: none; z-index: 9998;
-      transform: translate(-50%,-50%);
-      transition: width .2s, height .2s;
+    body a, body button, body [role="button"],
+    body .btn, body .gallery-item, body .nav-links a {
+      cursor: url('cursors/SilksongLinkCursor.cur') 0 0, pointer !important;
     }
-    body:has(a:hover) #cursor,
-    body:has(button:hover) #cursor { width: 18px; height: 18px; }
-    body:has(a:hover) #cursor-ring,
-    body:has(button:hover) #cursor-ring { width: 56px; height: 56px; }
+    body input, body textarea {
+      cursor: url('cursors/SilksongCursorText.cur') 12 12, text !important;
+    }
+    body .ba-drag {
+      cursor: url('cursors/SilksongHorizontalCursor.cur') 12 6, ew-resize !important;
+    }
 
     /* ── FLICKER ANIMATION ── */
     @keyframes flicker {
@@ -1865,27 +1858,27 @@
       <div class="gallery-grid-banners reveal reveal-delay-1">
         <div class="gallery-item">
           <img src="imágenes/alpine ace 1 - Twitter Banner.jpg" alt="Banner Redes Sociales 1" loading="lazy"/>
-          <div class="gallery-overlay"><span>Banner 1</span></div>
+          <div class="gallery-overlay"></div>
         </div>
         <div class="gallery-item">
           <img src="imágenes/syhte - Twitter Banner.jpg" alt="Banner Redes Sociales 2" loading="lazy"/>
-          <div class="gallery-overlay"><span>Banner 2</span></div>
+          <div class="gallery-overlay"></div>
         </div>
         <div class="gallery-item">
           <img src="imágenes/wildcat 1.5 - Twitter Banner.jpg" alt="Banner Redes Sociales 3" loading="lazy"/>
-          <div class="gallery-overlay"><span>Banner 3</span></div>
+          <div class="gallery-overlay"></div>
         </div>
         <div class="gallery-item">
           <img src="imágenes/yeezus - Twitter Banner.jpg" alt="Banner Redes Sociales 4" loading="lazy"/>
-          <div class="gallery-overlay"><span>Banner 4</span></div>
+          <div class="gallery-overlay"></div>
         </div>
         <div class="gallery-item">
           <img src="imágenes/pliego - Twitter Banner.jpg" alt="Banner Redes Sociales 4" loading="lazy"/>
-          <div class="gallery-overlay"><span>Banner 4</span></div>
+          <div class="gallery-overlay"></div>
         </div>
         <div class="gallery-item">
           <img src="imágenes/Renegade Rider 1 - Twitter Banner.jpg" alt="Banner Redes Sociales 4" loading="lazy"/>
-          <div class="gallery-overlay"><span>Banner 4</span></div>
+          <div class="gallery-overlay"></div>
         </div>
       </div>
     </div>
@@ -2229,24 +2222,8 @@
       if (e.touches && e.touches.length > 1) e.preventDefault();
     }, { passive: false });
 
-    // Cursor personalizado solo en dispositivos con mouse/trackpad
-    const cursor = document.getElementById('cursor'), ring = document.getElementById('cursor-ring');
-    const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-    if (hasFinePointer && cursor && ring) {
-      let mx = 0, my = 0, rx = 0, ry = 0;
-      document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-      (function tick() {
-        cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
-        rx += (mx - rx) * .12; ry += (my - ry) * .12;
-        ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-        requestAnimationFrame(tick);
-      })();
-    } else {
-      cursor?.remove();
-      ring?.remove();
-      document.body.style.cursor = 'auto';
-    }
+    // Cursor: usando cursores Silksong vía CSS (carpeta cursors/)
+    // El cursor rojo ya está desactivado en CSS; no se necesita JS para moverlo.
 
     // Scroll reveal
     const obs = new IntersectionObserver(es => {
