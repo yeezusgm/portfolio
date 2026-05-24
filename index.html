@@ -982,7 +982,7 @@
       margin-top: 0;
       padding: 2.5rem 3rem;
       position: relative;
-      background: linear-gradient(160deg, rgba(17, 2, 2, 0.72) 0%, rgba(47, 6, 6, 0.82) 50%, rgba(17, 2, 2, 0.72) 100%);
+      background: linear-gradient(160deg, rgba(17, 2, 2, 0.72) 0%, rgba(31, 4, 4, 0.82) 50%, rgba(17, 2, 2, 0.72) 100%);
       border: 1px solid rgba(204,26,26,0.45);
       border-radius: 4px;
       box-shadow:
@@ -1113,21 +1113,33 @@
       position: relative;
       cursor: none;
       border: 1px solid rgba(204,26,26,0.08);
+      background: transparent;
+      padding: 0;
+      box-shadow: none;
+    }
+
+    .gallery-item::before,
+    .gallery-item::after {
+      display: none;
+      content: none;
     }
     .gallery-grid-ordered .gallery-item {
       margin-bottom: 0;
     }
     .gallery-item img {
-      width: 100%; display: block;
+      width: 100%;
+      display: block;
       transition: transform .5s cubic-bezier(.16,1,.3,1), filter .4s;
     }
     .gallery-item:hover img { transform: scale(1.04); filter: brightness(1.05) saturate(1.05); }
     .gallery-overlay {
-      position: absolute; inset: 0;
+      position: absolute;
+      inset: 0;
       background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, transparent 60%);
       opacity: 0;
       transition: opacity .3s;
-      display: flex; align-items: flex-end;
+      display: flex;
+      align-items: flex-end;
       padding: 1.2rem;
     }
     .gallery-item:hover .gallery-overlay { opacity: 1; }
@@ -1630,6 +1642,174 @@
       }
     }
 
+
+    /* ── FIX OVERFLOW PORTADA / MOBILE ── */
+    html,
+    body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    #hero {
+      max-width: 100vw;
+      overflow-x: hidden;
+    }
+
+    .portfolio-cover {
+      max-width: 100%;
+      overflow: hidden;
+    }
+
+    .portfolio-title {
+      max-width: calc(100vw - 3rem);
+      overflow: hidden;
+      text-overflow: clip;
+    }
+
+    @media (max-width: 900px) {
+      #hero {
+        overflow-x: hidden;
+      }
+
+      .portfolio-cover {
+        overflow: hidden;
+      }
+
+      .portfolio-title {
+        max-width: calc(100vw - 2.5rem);
+        font-size: clamp(4.2rem, 12vw, 7.2rem);
+        letter-spacing: .01em;
+      }
+
+      .portfolio-person {
+        width: min(60vw, 400px);
+      }
+    }
+
+    @media (max-width: 600px) {
+      #hero {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+        overflow-x: hidden;
+      }
+
+      .portfolio-cover {
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .portfolio-title {
+        max-width: 100%;
+        padding: 0 .35rem;
+        font-size: clamp(3.1rem, 13.5vw, 4.8rem);
+        letter-spacing: 0;
+      }
+
+      .portfolio-title .portfolio-title-accent {
+        margin-left: .03em;
+      }
+
+      .cover-small-label {
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        text-align: center;
+        letter-spacing: .22em;
+      }
+
+      .cover-name,
+      .cover-years,
+      .cover-quote,
+      .cover-orbit-line {
+        max-width: calc(100vw - 1.5rem);
+      }
+    }
+
+
+    /* ── HARD FIX SCROLL HORIZONTAL HERO ── */
+    html {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: clip !important;
+    }
+
+    body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: clip !important;
+      position: relative;
+    }
+
+    #hero {
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden !important;
+      padding-left: clamp(.75rem, 2vw, 1.5rem);
+      padding-right: clamp(.75rem, 2vw, 1.5rem);
+    }
+
+    .portfolio-cover {
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow: hidden !important;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+
+    .portfolio-title {
+      left: 0 !important;
+      right: 0 !important;
+      transform: none !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      padding-left: .5rem !important;
+      padding-right: .5rem !important;
+      box-sizing: border-box;
+      overflow: hidden !important;
+      white-space: nowrap;
+      font-size: clamp(5rem, 10.2vw, 11.4rem) !important;
+      letter-spacing: .005em !important;
+    }
+
+    .portfolio-title .portfolio-title-accent {
+      margin-left: .025em !important;
+    }
+
+    .portfolio-person,
+    .cover-orbit-line,
+    .cover-quote,
+    .cover-name,
+    .cover-years {
+      max-width: 100% !important;
+    }
+
+    @media (max-width: 900px) {
+      .portfolio-title {
+        font-size: clamp(4.2rem, 11.2vw, 7rem) !important;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .portfolio-title {
+        font-size: clamp(2.75rem, 12.2vw, 4.4rem) !important;
+        padding-left: .25rem !important;
+        padding-right: .25rem !important;
+      }
+
+      .portfolio-cover {
+        min-height: 540px;
+      }
+
+      .portfolio-person {
+        width: min(82vw, 320px) !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1785,7 +1965,7 @@
 
       <div class="cover-name">Jesús Gervacio</div>
 
-      <div class="cover-years">2021 - 2025</div>
+      <div class="cover-years">A.K.A Yeezus</div>
 
       <span class="cover-orbit-line" aria-hidden="true"></span>
       <span class="cover-mark" aria-hidden="true"></span>
@@ -2394,39 +2574,7 @@
       </div>
     </div>
 
-    <!-- EDICIÓN DE VIDEO -->
-    <div class="gallery-cat"><span class="corner corner-tl"></span><span class="corner corner-tr"></span><span class="corner corner-bl"></span><span class="corner corner-br"></span>
-      <div class="cat-header reveal">
-        <span class="cat-title">Edición de Video</span>
-        <span class="cat-count">Audiovisual</span>
-      </div>
-      <div class="video-grid reveal reveal-delay-1">
-        <div class="video-card">
-          <iframe src="https://www.youtube.com/embed/fTNwM8HKnBA?si=i9-Wbh086t6Z1kv_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-          <div class="video-info">
-            <p class="video-title">Aftermovie | Hellbound Festival</p>
-          </div>
-        </div>
-        <div class="video-card">
-          <!-- Pega aquí tu segundo embed -->
-          <iframe src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-          <div class="video-info">
-            <p class="video-title">Título del video</p>
-            <p class="video-desc">Descripción breve del proyecto.</p>
-          </div>
-        </div>
-        <div class="video-card">
-          <!-- Pega aquí tu tercer embed de YouTube -->
-          <iframe src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-          <div class="video-info">
-            <p class="video-title">Título del video</p>
-            <p class="video-desc">Descripción breve del proyecto.</p>
-          </div>
-        </div>
-      </div>
-    </div> <!-- /.gallery-frame -->
-
-  </section>
+    
 
   <!-- ── GIF SECTION ── -->
   <section id="gif-banner" style="padding: 4rem 4rem; background: var(--bg);">
