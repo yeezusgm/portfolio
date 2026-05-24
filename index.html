@@ -195,7 +195,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 8rem 4rem 6rem;
+      padding: 7.5rem 1.5rem 4rem;
       position: relative;
       overflow: visible;
       background: radial-gradient(ellipse at 70% 40%, rgba(120,0,0,0.12) 0%, transparent 60%),
@@ -289,6 +289,267 @@
       0%   { opacity: 0.08; transform: scale(1.1);  filter: blur(120px); }
       50%  { opacity: 0.2;  transform: scale(0.92); filter: blur(100px); }
       100% { opacity: 0.08; transform: scale(1.1);  filter: blur(120px); }
+    }
+
+
+    /* ── PORTFOLIO COVER HERO ── */
+    .portfolio-cover {
+      position: relative;
+      width: min(100%, 1500px);
+      min-height: clamp(680px, 76vh, 850px);
+      margin: 0 auto;
+      padding: clamp(2.8rem, 4vw, 4.5rem);
+      border-radius: 0;
+      overflow: visible;
+      isolation: isolate;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+    }
+
+    .portfolio-cover::before {
+      display: none;
+    }
+
+    .portfolio-cover::after {
+      display: none;
+    }
+
+    .portfolio-cover > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    .cover-small-label {
+      position: absolute;
+      top: clamp(4rem, 7vh, 5.8rem);
+      left: 31%;
+      z-index: 5;
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(.78rem, 1vw, .95rem);
+      font-weight: 500;
+      letter-spacing: .32em;
+      color: var(--red-bright);
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(255,0,0,.6);
+    }
+
+    .portfolio-title {
+      position: absolute;
+      top: clamp(5.6rem, 11vh, 8.2rem);
+      left: 50%;
+      z-index: 2;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 100%;
+      padding: 0 1.2rem;
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(6.2rem, 12vw, 13rem);
+      font-weight: 800;
+      line-height: .82;
+      letter-spacing: .025em;
+      color: var(--cream);
+      text-align: center;
+      white-space: nowrap;
+      text-shadow: 0 0 22px rgba(255,0,0,.12);
+    }
+
+    .portfolio-title .portfolio-title-accent {
+      color: var(--red-bright);
+      margin-left: .06em;
+      text-shadow:
+        0 0 12px rgba(255,0,0,.45),
+        0 0 36px rgba(255,0,0,.18);
+      animation: textFlicker 5s ease-in-out infinite 3s;
+    }
+
+    .portfolio-person {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      z-index: 4;
+      transform: translateX(-50%);
+      width: min(48vw, 500px);
+      max-height: 88%;
+      object-fit: contain;
+      object-position: bottom center;
+      filter: sepia(.08) saturate(.9) contrast(1.04) brightness(.92);
+      pointer-events: none;
+    }
+
+    .cover-name {
+      position: absolute;
+      left: 9%;
+      top: 49%;
+      z-index: 6;
+      min-width: 210px;
+      padding: .72rem 1.65rem;
+      border: 1.5px solid rgba(255,34,34,.88);
+      border-radius: 2px;
+      color: var(--cream);
+      font-family: 'DM Mono', monospace;
+      font-size: .82rem;
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: .08em;
+      text-align: center;
+      text-transform: uppercase;
+      background: rgba(5,0,0,.38);
+      box-shadow: 0 0 18px rgba(255,0,0,.15);
+      backdrop-filter: blur(5px);
+    }
+
+    .cover-years {
+      position: absolute;
+      right: 10%;
+      top: 62%;
+      z-index: 6;
+      min-width: 170px;
+      padding: .72rem 1.65rem;
+      border: 1.5px solid rgba(255,34,34,.88);
+      border-radius: 2px;
+      color: var(--cream);
+      font-family: 'DM Mono', monospace;
+      font-size: .82rem;
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: .08em;
+      text-align: center;
+      background: rgba(5,0,0,.38);
+      box-shadow: 0 0 18px rgba(255,0,0,.15);
+      backdrop-filter: blur(5px);
+    }
+
+    .cover-quote {
+      position: absolute;
+      left: 30%;
+      top: 54%;
+      z-index: 7;
+      max-width: 590px;
+      font-family: 'DM Mono', monospace;
+      font-style: italic;
+      font-size: clamp(1.55rem, 3.1vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -.08em;
+      color: rgba(240,230,208,.86);
+      transform: rotate(-7deg);
+      text-align: center;
+      pointer-events: none;
+      text-shadow: 0 0 10px rgba(255,0,0,.12);
+    }
+
+    .cover-mark {
+      display: none;
+    }
+
+    .cover-corner {
+      display: none;
+    }
+
+    .cover-orbit-line {
+      position: absolute;
+      left: 4%;
+      top: 45%;
+      z-index: 3;
+      width: 92%;
+      height: 28%;
+      border: 2.5px solid rgba(240,230,208,.32);
+      border-radius: 50%;
+      transform: rotate(-7deg);
+      pointer-events: none;
+    }
+
+    @media (max-width: 900px) {
+      .portfolio-cover {
+        width: 100%;
+        min-height: 640px;
+        padding: 2rem 1.4rem;
+      }
+
+      .portfolio-title {
+        top: 6.6rem;
+        font-size: clamp(4.6rem, 13vw, 8rem);
+        letter-spacing: .015em;
+      }
+
+      .cover-small-label {
+        top: 5rem;
+        left: 26%;
+      }
+
+      .portfolio-person {
+        width: min(64vw, 420px);
+      }
+
+      .cover-name {
+        left: 5%;
+        top: 48%;
+      }
+
+      .cover-years {
+        right: 5%;
+        top: 66%;
+      }
+
+      .cover-quote {
+        left: 19%;
+        top: 55%;
+        max-width: 520px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .portfolio-cover {
+        min-height: 570px;
+        padding: 1.2rem;
+      }
+
+      .portfolio-title {
+        top: 6.4rem;
+        font-size: clamp(3rem, 13vw, 4.9rem);
+        letter-spacing: .01em;
+      }
+
+      .cover-small-label {
+        top: 4.8rem;
+        left: 17%;
+        font-size: .64rem;
+      }
+
+      .portfolio-person {
+        width: min(88vw, 340px);
+      }
+
+      .cover-name,
+      .cover-years {
+        font-size: .66rem;
+        min-width: auto;
+        padding: .55rem .9rem;
+      }
+
+      .cover-name {
+        left: 6%;
+        top: 42%;
+      }
+
+      .cover-years {
+        right: 6%;
+        top: 74%;
+      }
+
+      .cover-quote {
+        left: 10%;
+        top: 56%;
+        max-width: 82%;
+        font-size: clamp(1.15rem, 6.2vw, 1.9rem);
+      }
+
+      .cover-orbit-line {
+        left: -4%;
+        width: 108%;
+        top: 47%;
+      }
     }
 
     .hero-sub {
@@ -425,7 +686,11 @@
       border-top: 1px solid rgba(204,26,26,0.1);
       background: radial-gradient(ellipse at 0% 50%, rgba(100,0,0,0.08) 0%, transparent 60%);
     }
-    .about-img-wrap { position: relative; }
+    .about-img-wrap {
+      position: relative;
+      width: min(100%, 560px);
+      justify-self: center;
+    }
     .about-img-box {
       width: 100%;
       aspect-ratio: 4/5;
@@ -717,10 +982,26 @@
       margin-top: 0;
       padding: 2.5rem 3rem;
       position: relative;
-      background: linear-gradient(160deg, rgba(40,0,60,0.72) 0%, rgba(20,0,40,0.82) 50%, rgba(35,0,55,0.68) 100%);
+      background: linear-gradient(160deg, rgba(17, 2, 2, 0.72) 0%, rgba(47, 6, 6, 0.82) 50%, rgba(17, 2, 2, 0.72) 100%);
       border: 1px solid rgba(204,26,26,0.45);
       border-radius: 4px;
-      box-shadow: 0 0 24px rgba(180,0,0,0.12), inset 0 0 40px rgba(60,0,80,0.15);
+      box-shadow:
+        0 0 24px rgba(180,0,0,0.12),
+        0 0 55px rgba(255,0,0,0.16),
+        18px 0 70px rgba(255,0,0,0.12),
+        -18px 0 70px rgba(255,0,0,0.08),
+        inset 0 0 40px rgba(60,0,80,0.15);
+      transition: box-shadow .25s ease, border-color .25s ease;
+    }
+
+    .gallery-cat:hover {
+      border-color: rgba(255,34,34,0.72);
+      box-shadow:
+        0 0 28px rgba(180,0,0,0.18),
+        0 0 75px rgba(255,0,0,0.22),
+        20px 0 90px rgba(255,0,0,0.16),
+        -20px 0 90px rgba(255,0,0,0.12),
+        inset 0 0 44px rgba(60,0,80,0.18);
     }
 
     /* Red glow top line */
@@ -1495,13 +1776,20 @@
       <path d="M1290,250 C1260,230 1245,215 1235,205" stroke="#880000" stroke-width="0.8" fill="none"/>
     </svg>
 
-    <div class="hero-tag">Disponible para proyectos · 🇲🇽</div>
-    <h1 class="hero-title">
-      <span class="line"><span class="word">Diseño que</span></span>
-      <span class="line"><span class="word accent">habla,</span></span>
-      <span class="line"><span class="word">conecta y</span></span>
-      <span class="line"><span class="word">sorprende.</span></span>
-    </h1>
+    <div class="portfolio-cover">
+      <div class="cover-small-label">Diseño Multimedia</div>
+
+      <h1 class="portfolio-title">Port<span class="portfolio-title-accent">folio</span></h1>
+
+      <img class="portfolio-person" src="imágenes/bust teeth.png" alt="Jesús Gervacio" />
+
+      <div class="cover-name">Jesús Gervacio</div>
+
+      <div class="cover-years">2021 - 2025</div>
+
+      <span class="cover-orbit-line" aria-hidden="true"></span>
+      <span class="cover-mark" aria-hidden="true"></span>
+    </div>
 
   </section>
 
@@ -1596,7 +1884,7 @@
 
   <!-- SKILLS -->
   <section id="skills">
-    <div class="section-label reveal">Especialidades</div>
+    <div class="section-label reveal">Habilidades</div>
     <h2 class="section-title reveal reveal-delay-1">Lo que hago mejor.</h2>
     <div class="skills-grid">
 
