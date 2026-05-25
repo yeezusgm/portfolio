@@ -1810,6 +1810,25 @@
       }
     }
 
+
+    /* ── PORTADA FADE OUT AL HACER SCROLL ── */
+    .portfolio-cover {
+      opacity: var(--cover-opacity, 1);
+      transform: translateY(var(--cover-translate, 0px)) scale(var(--cover-scale, 1));
+      filter: blur(var(--cover-blur, 0px));
+      transition: opacity .08s linear, transform .08s linear, filter .08s linear;
+      will-change: opacity, transform, filter;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .portfolio-cover {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        transition: none !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -2020,7 +2039,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
           </div>
           <div class="timeline-role">
-            Diseñador Multimedia Freelance
+            Diseñador Multimedia por proyecto
             <span class="timeline-company">— Online</span>
           </div>
           <div class="timeline-date">Diciembre 2022 – Presente</div>
@@ -2855,6 +2874,42 @@
       document.addEventListener('click', startMusic);
       document.addEventListener('keydown', startMusic);
     }
+
+
+    // ── PORTADA FADE OUT AL HACER SCROLL ──
+    (function() {
+      const cover = document.querySelector('.portfolio-cover');
+      const hero = document.getElementById('hero');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!cover || !hero || reduceMotion) return;
+
+      let ticking = false;
+
+      function updateCoverFade() {
+        const heroHeight = Math.max(hero.offsetHeight, 1);
+        const startFade = heroHeight * 0.04;
+        const endFade = heroHeight * 0.55;
+        const rawProgress = (window.scrollY - startFade) / (endFade - startFade);
+        const progress = Math.min(Math.max(rawProgress, 0), 1);
+
+        cover.style.setProperty('--cover-opacity', String(1 - progress));
+        cover.style.setProperty('--cover-translate', `${progress * -45}px`);
+        cover.style.setProperty('--cover-scale', String(1 - progress * 0.035));
+        cover.style.setProperty('--cover-blur', `${progress * 3}px`);
+        cover.style.pointerEvents = progress > 0.95 ? 'none' : '';
+        ticking = false;
+      }
+
+      function requestCoverFade() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(updateCoverFade);
+      }
+
+      updateCoverFade();
+      window.addEventListener('scroll', requestCoverFade, { passive: true });
+      window.addEventListener('resize', requestCoverFade, { passive: true });
+    })();
 
 
     // Nav highlight
